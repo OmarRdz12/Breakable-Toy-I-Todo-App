@@ -5,6 +5,9 @@ import com.encora.backend.model.Task;
 import java.util.List;
 
 public interface ToDoService {
-    List<Task> getAllToDos();
+    List<Task> getAllToDos(int offset, int limit);
     Task save(Task task);
+    Task updateTask(Task task, Long id);
+    Task undoneTask(Long id);
+    Task doneTask(Long id);
 }
