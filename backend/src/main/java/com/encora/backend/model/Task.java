@@ -3,15 +3,22 @@ package com.encora.backend.model;
 import java.util.Date;
 
 public class Task {
+
+    public enum Priority {
+        LOW,
+        MEDIUM,
+        HIGH
+    }
+
     private Long id;
     private boolean state;
     private Date doneDate;
     private Date creationDate;
     private Date dueDate;
-    private String priority;
+    private Priority priority;
     private String text;
 
-    public Task(Long id, Date doneDate, boolean state, Date dueDate, Date creationDate, String priority, String text) {
+    public Task(Long id, Date doneDate, boolean state, Date dueDate, Date creationDate, Priority priority, String text) {
         this.doneDate = doneDate;
         this.id = id;
         this.state = state;
@@ -41,7 +48,7 @@ public class Task {
         return dueDate;
     }
 
-    public String getPriority() {
+    public Priority getPriority() {
         return priority;
     }
 
@@ -69,7 +76,7 @@ public class Task {
         this.dueDate = dueDate;
     }
 
-    public void setPriority(String priority) {
+    public void setPriority(Priority priority) {
         this.priority = priority;
     }
 

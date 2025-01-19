@@ -13,11 +13,11 @@ public class ToDoDaoImpl implements ToDoDao{
     private static final List<Task> toDos = new ArrayList<>();
 
     static {
-        toDos.add(new Task(1L, null, false, null, null, "high", "Create the repository"));
-        toDos.add(new Task(2L, null, false, null, null, "high", "Create the spring project"));
-        toDos.add(new Task(3L, null, false, null, null, "medium", "Make the endpoints"));
-        toDos.add(new Task(4L, null, false, null, null, "low", "Test the endpoints"));
-        toDos.add(new Task(5L, new Date(), true, null, null, "low", "Push commits"));
+        toDos.add(new Task(1L, null, false, null, null, Task.Priority.HIGH, "Create the repository"));
+        toDos.add(new Task(2L, null, false, null, null, Task.Priority.MEDIUM, "Create the spring project"));
+        toDos.add(new Task(3L, null, false, null, null, Task.Priority.HIGH, "Make the endpoints"));
+        toDos.add(new Task(4L, null, false, null, null, Task.Priority.MEDIUM, "Test the endpoints"));
+        toDos.add(new Task(5L, new Date(), true, null, null, Task.Priority.HIGH, "Push commits"));
     }
 
     @Override

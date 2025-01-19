@@ -2,7 +2,6 @@ package com.encora.backend.controllers;
 
 import com.encora.backend.model.Task;
 import com.encora.backend.service.ToDoService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +15,6 @@ import java.util.List;
 public class ToDoApiController implements ToDoApi {
     ToDoService toDoService;
 
-    @Autowired
     public ToDoApiController(ToDoService toDoService) {
         this.toDoService = toDoService;
     }
