@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ToDoDao {
     Task save(Task task);
-    List<Task> findAll(int offset, int limit);
+    List<Task> findAll(int offset, int limit, String priority, String state, String text);
     Task updateTask(Task task, Long id);
     Task undoneTask(Long id);
     Task doneTask(Long id);

@@ -20,8 +20,14 @@ public class ToDoApiController implements ToDoApi {
     }
 
     @Override
-    public ResponseEntity<List<Task>> getToDos(@RequestParam int offset, @RequestParam int limit) {
-        return new ResponseEntity<>(toDoService.getAllToDos(offset, limit), HttpStatus.OK);
+    public ResponseEntity<List<Task>> getToDos(
+            @RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
+            @RequestParam (name = "limit", required = false, defaultValue = "10") int limit,
+            @RequestParam (name = "priority", required = false, defaultValue = "all") String priority,
+            @RequestParam (name = "state", required = false, defaultValue = "all") String state,
+            @RequestParam (name = "text", required = false, defaultValue = "") String text
+    ) {
+        return new ResponseEntity<>(toDoService.getAllToDos(offset, limit, priority, state, text), HttpStatus.OK);
     }
 
     @Override

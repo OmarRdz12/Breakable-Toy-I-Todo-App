@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ToDoApi {
     @GetMapping("/todos")
-    ResponseEntity<List<Task>> getToDos(@RequestParam int offset, int limit); //limit: number of records --- offset: first id to return
+    ResponseEntity<List<Task>> getToDos(@RequestParam int offset, int limit, String priority, String state, String text); //limit: number of records --- offset: first id to return
 
     @PostMapping("/todos")
     ResponseEntity<Task> createTodo(@RequestBody(required = true) Task task);
