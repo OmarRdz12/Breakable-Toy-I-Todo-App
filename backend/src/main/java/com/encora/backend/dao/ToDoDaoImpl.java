@@ -29,7 +29,7 @@ public class ToDoDaoImpl implements ToDoDao{
     }
 
     @Override
-    public List<Task> findAll(int offset, int limit, String priority, String state, String text) {
+    public List<Task> findAll(int offset, int limit, String priority, String state, String name) {
         List <Task> filterRecords = toDos;
         if (priority.compareTo("all") != 0) {
             filterRecords = filterRecords.stream().filter(task -> task.getPriority().compareTo(Task.Priority.valueOf(priority)) == 0).toList();
@@ -38,8 +38,8 @@ public class ToDoDaoImpl implements ToDoDao{
             boolean stateInBoolean = state.compareTo("true") == 0;
             filterRecords = filterRecords.stream().filter(task -> task.isState() == stateInBoolean).toList();
         }
-        if (text.compareTo("") != 0) {
-            filterRecords = filterRecords.stream().filter(task -> task.getText().toLowerCase().contains(text.toLowerCase())).toList();
+        if (name.compareTo("") != 0) {
+            filterRecords = filterRecords.stream().filter(task -> task.getName().toLowerCase().contains(name.toLowerCase())).toList();
         }
 
         filterRecords = filterRecords.stream().filter(task -> task.getId() > offset).toList();
@@ -52,7 +52,7 @@ public class ToDoDaoImpl implements ToDoDao{
     @Override
     public Task updateTask(Task task, Long id) {
         Task selectedTask = toDos.stream().filter(toDo -> toDo.getId() == id).toList().getFirst();
-        selectedTask.setText(task.getText());
+        selectedTask.setName(task.getName());
         selectedTask.setPriority(task.getPriority());
         selectedTask.setDueDate(task.getDueDate());
         return selectedTask;
