@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: todo-app
+
+server:
+  port: 9090
