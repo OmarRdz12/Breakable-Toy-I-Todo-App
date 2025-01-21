@@ -16,16 +16,16 @@ public class Task {
     private Date creationDate;
     private Date dueDate;
     private Priority priority;
-    private String text;
+    private String name;
 
-    public Task(Long id, Date doneDate, boolean state, Date dueDate, Date creationDate, Priority priority, String text) {
+    public Task(Long id, Date doneDate, boolean state, Date dueDate, Date creationDate, Priority priority, String name) {
         this.doneDate = doneDate;
         this.id = id;
         this.state = state;
         this.dueDate = dueDate;
         this.creationDate = creationDate;
         this.priority = priority;
-        this.text = text;
+        this.name = name;
     }
 
     public Date getCreationDate() {
@@ -52,8 +52,8 @@ public class Task {
         return priority;
     }
 
-    public String getText() {
-        return text;
+    public String getName() {
+        return name;
     }
 
     public void setId(Long id) {
@@ -80,7 +80,7 @@ public class Task {
         this.priority = priority;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setName(String text) {
+        this.name = name;
     }
 }

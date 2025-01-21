@@ -17,8 +17,8 @@ public class ToDoServiceImpl implements ToDoService{
     }
 
     @Override
-    public List<Task> getAllToDos(int offset, int limit) {
-        return toDoDao.findAll(offset, limit);
+    public List<Task> getAllToDos(int offset, int limit, String priority, String state, String name) {
+        return toDoDao.findAll(offset, limit, priority, state, name);
     }
 
     @Override
