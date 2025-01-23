@@ -1,9 +1,12 @@
 package com.encora.backend.dao;
 
+import com.encora.backend.model.CustomResponse;
 import com.encora.backend.model.Task;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,11 +16,11 @@ public class ToDoDaoImpl implements ToDoDao{
     private static final List<Task> toDos = new ArrayList<>();
 
     static {
-        toDos.add(new Task(1L, null, false, null, null, Task.Priority.HIGH, "Create the repository"));
-        toDos.add(new Task(2L, null, false, null, null, Task.Priority.MEDIUM, "Create the spring project"));
-        toDos.add(new Task(3L, null, false, null, null, Task.Priority.HIGH, "Make the endpoints"));
-        toDos.add(new Task(4L, null, false, null, null, Task.Priority.MEDIUM, "Test the endpoints"));
-        toDos.add(new Task(5L, new Date(), true, null, null, Task.Priority.HIGH, "Push commits"));
+        toDos.add(new Task(1L, null, false, LocalDate.of(2024,9, 12), null, Task.Priority.HIGH, "Create the repository"));
+        toDos.add(new Task(2L, null, false, LocalDate.of(2024,9, 12), null, Task.Priority.MEDIUM, "Create the spring project"));
+        toDos.add(new Task(3L, null, false, LocalDate.of(2024,9, 12), null, Task.Priority.HIGH, "Make the endpoints"));
+        toDos.add(new Task(4L, null, false, LocalDate.of(2024,9, 12), null, Task.Priority.MEDIUM, "Test the endpoints"));
+        toDos.add(new Task(5L, LocalDate.now(), true, LocalDate.now(), null, Task.Priority.HIGH, "Push commits"));
     }
 
     @Override
@@ -29,7 +32,7 @@ public class ToDoDaoImpl implements ToDoDao{
     }
 
     @Override
-    public List<Task> findAll(int offset, int limit, String priority, String state, String name) {
+    public CustomResponse<Task> findAll(int page, int limit, String priority, String state, String name) {
         List <Task> filterRecords = toDos;
         if (priority.compareTo("all") != 0) {
             filterRecords = filterRecords.stream().filter(task -> task.getPriority().compareTo(Task.Priority.valueOf(priority)) == 0).toList();
@@ -42,11 +45,18 @@ public class ToDoDaoImpl implements ToDoDao{
             filterRecords = filterRecords.stream().filter(task -> task.getName().toLowerCase().contains(name.toLowerCase())).toList();
         }
 
-        filterRecords = filterRecords.stream().filter(task -> task.getId() > offset).toList();
-        if (limit > filterRecords.size()) {
-            return  filterRecords;
+        int total = filterRecords.size();
+        int offset = (page - 1) * limit;
+
+        if (offset >= total) {
+            offset = Math.max(total - limit, 0);
         }
-        return filterRecords.subList(0, limit);
+
+        int start = Math.min(offset, total);
+        int end = Math.min(start + limit, total);
+        filterRecords = filterRecords.subList(start, end);
+
+        return new CustomResponse<Task>(filterRecords, total, page);
     }
 
     @Override
@@ -73,7 +83,7 @@ public class ToDoDaoImpl implements ToDoDao{
         Task selectedTask = toDos.stream().filter(toDo -> toDo.getId() == id).toList().getFirst();
         if (!selectedTask.isState()) {
             selectedTask.setState(true);
-            selectedTask.setDoneDate(new Date());
+            selectedTask.setDoneDate(LocalDate.now());
         }
         return selectedTask;
     }
