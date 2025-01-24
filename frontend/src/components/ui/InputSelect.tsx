@@ -1,7 +1,7 @@
 import { Select } from "antd"
 import { SelectInputProps } from "./types"
 
-const InputSelect = ({id, label, required, onChange, name, options, defaultValue, size}: SelectInputProps) => {
+const InputSelect = ({id, label, required, onChange, name, options, defaultValue, size, value}: SelectInputProps) => {
   return (
     <div className="flex gap-2 flex-col">
         <label htmlFor={id}>{label}{required && <span className="text-red-500"> *</span>}</label>
@@ -12,6 +12,7 @@ const InputSelect = ({id, label, required, onChange, name, options, defaultValue
             options={options}
             defaultValue={defaultValue}
             size={size}
+            value={value}
         /> 
     </div>
   )

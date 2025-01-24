@@ -6,7 +6,7 @@ export interface BaseInputProps {
     id: string
     value?: string
     className?: string
-    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void 
+    onChange?: (e: React.ChangeEvent<HTMLInputElement> ) => void 
     size?: SizeType
     prefix?: React.ReactNode
     type: string
@@ -18,7 +18,7 @@ export interface BaseInputProps {
 }
 
 interface Choice {
-    value: string | number 
+    value: string 
     label: string
 }
 
@@ -31,6 +31,7 @@ export interface SelectInputProps {
     required?: boolean
     onChange: (value: string) => void
     size?: SizeType
+    value?: string
 }
 
 export interface Task {
