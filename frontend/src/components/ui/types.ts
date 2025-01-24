@@ -32,6 +32,7 @@ export interface SelectInputProps {
     onChange: (value: string) => void
     size?: SizeType
     value?: string
+    className?: string
 }
 
 export interface Task {

@@ -27,7 +27,7 @@ const FilterForm = ({ fetchData }: FilterProps) => {
 
     return (
         <>
-            <form className="w-full flex flex-col gap-2 box-border" onSubmit={handleSubmit}>
+            <form className="w-11/12 p-4 my-4 flex flex-col border-2 border-gray-200 gap-2 box-border rounded shadow " onSubmit={handleSubmit}>
                 <InputText
                     placeholder="Escribe aqui"
                     name="name"
@@ -66,7 +66,15 @@ const FilterForm = ({ fetchData }: FilterProps) => {
                     defaultValue="all"
                     size="large"
                 />
-                <BaseButton htmlType="submit" text="Search" size="large" className="w-1/4 bg-purple-500 shadow" />
+                <div className="w-full flex justify-center">
+                    <BaseButton
+                        htmlType="submit"
+                        text="Search"
+                        size="large"
+                        className="w-1/2 bg-zinc-900 text-white shadow hover:!bg-zinc-700 
+                        hover:!border-zinc-700 hover:!text-white"
+                    />
+                </div>
             </form>
         </>
     )

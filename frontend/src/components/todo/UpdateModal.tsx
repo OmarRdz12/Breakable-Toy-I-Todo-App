@@ -3,27 +3,28 @@ import InputDate from "../ui/InputDate"
 import InputSelect from "../ui/InputSelect"
 import InputText from "../ui/InputText"
 import BaseModal from "../ui/Modal"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import axios from "axios"
 import dayjs, { Dayjs } from 'dayjs'
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
-import { controlCreate } from "../../features/forms/modalSlice"
+import { controlUpdate } from "../../features/forms/modalSlice"
 
-interface CreationModalProps {
-    fetchData(): Promise<void>;
+interface UpdateModalProps {
+    fetchData(): Promise<void>
 }
 
-interface CreationForm {
+interface UpdateForm {
     name: string
     priority: string
     dueDate: string | number | Dayjs | Date | null | undefined
 }
 
-const CreationModal = ({ fetchData }: CreationModalProps) => {
+const UpdateModal = ({ fetchData }: UpdateModalProps) => {
     const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:9090"
-    const creationModal = useAppSelector(state => state.creation.open)
+    const updateModal = useAppSelector(state => state.update.open)
+    const task = useAppSelector(state => state.selectedTask)
     const dispatch = useAppDispatch()
-    const [formData, setFormData] = useState<CreationForm>({ name: "", priority: "", dueDate: null })
+    const [formData, setFormData] = useState<UpdateForm>({ name: task.name, priority: task.priority, dueDate: task.dueDate ? dayjs(task.dueDate) : null })
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -34,24 +35,22 @@ const CreationModal = ({ fetchData }: CreationModalProps) => {
     }
 
     const onChange: DatePickerProps['onChange'] = (date) => {
-        setFormData({ ...formData, ["dueDate"]: date.format("YYYY-MM-DD") })
+        setFormData({ ...formData, ["dueDate"]: date ? date.format("YYYY-MM-DD") : null })
     }
 
     const onSubmit = async () => {
-        dispatch(controlCreate(false))
-        const data = await axios.post(`${apiUrl}/todos`, formData)
+        dispatch(controlUpdate(false))
+        const data = await axios.put(`${apiUrl}/todos/${task.id}`, formData)
         await fetchData()
-        setFormData({ name: "", priority: "", dueDate: "" })
     }
 
     const closeModal = () => {
-        dispatch(controlCreate(false))
-        setFormData({ name: "", priority: "", dueDate: "" })
+        dispatch(controlUpdate(false))
     }
 
     return (
         <>
-            <BaseModal onSubmit={onSubmit} closeModal={closeModal} openModal={creationModal} text="Save" title="New To Do" >
+            <BaseModal onSubmit={onSubmit} closeModal={closeModal} openModal={updateModal} text="Save" title="New To Do" >
                 <form className="w-full flex flex-col p-4 gap-2">
                     <InputText
                         placeholder="Escribe aqui"
@@ -95,4 +94,4 @@ const CreationModal = ({ fetchData }: CreationModalProps) => {
     )
 }
 
-export default CreationModal
+export default UpdateModal

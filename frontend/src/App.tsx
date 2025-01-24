@@ -14,6 +14,7 @@ function App() {
 
   const currentPage = useAppSelector(state => state.pagination.current)
   const filters = useAppSelector(state => state.filters)
+  const modalCreate = useAppSelector(state => state.creation)
   const dispatch = useAppDispatch()
 
   const fetchData = async () => {
@@ -27,12 +28,15 @@ function App() {
   }, [currentPage])
 
   return (
-
-    <div className="w-screen p-4 box-border">
+    <div className="w-screen flex flex-col items-center">
+      <h1 className="my-2 font-bold text-3xl">Todo App</h1>
       <FilterForm fetchData={fetchData} />
       <BaseButton onClick={() => dispatch(controlCreate(true))} text="New Todo" htmlType="button" />
       <DataViewer fetchData={fetchData} />
-      <CreationModal fetchData={fetchData} />
+      {
+        modalCreate &&
+        <CreationModal fetchData={fetchData} />
+      }
     </div>
   )
 }

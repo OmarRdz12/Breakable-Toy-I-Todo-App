@@ -10,6 +10,15 @@ const initialState: Tasks = {
     data: []
 }
 
+const initialStateSelected: Task  = {
+    name: "",
+    priority: "",
+    dueDate: "",
+    doneDate: "",
+    state: false,
+    id: 0
+}
+
 export const taskSlice = createSlice({
     name: 'tasks',
     initialState,
@@ -18,12 +27,26 @@ export const taskSlice = createSlice({
             const list: Task[] = action.payload
             list.forEach((element: Task) => {
                 element.key = element.id
-                element.dueDate = format(element.dueDate, 'MM/dd/yyyy');
             })
             state.data = list
         }
     }
 })
 
+export const selectedTaskSlice = createSlice({
+    name: 'selectedTask',
+    initialState: initialStateSelected,
+    reducers: {
+        updateSelected: (state, action) => {
+            state.name = action.payload.name
+            state.priority = action.payload.priority
+            state.dueDate = action.payload.dueDate
+            state.id = action.payload.id
+        }
+    }
+})
+
 export const { updateRecords } = taskSlice.actions
-export default taskSlice.reducer
+export const tasksReducer = taskSlice.reducer
+export const { updateSelected } = selectedTaskSlice.actions
+export const selectedTaskReducer = selectedTaskSlice.reducer
