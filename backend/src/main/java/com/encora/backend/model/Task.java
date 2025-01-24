@@ -80,7 +80,7 @@ public class Task {
         this.priority = priority;
     }
 
-    public void setName(String text) {
+    public void setName(String name) {
         this.name = name;
     }
 }
