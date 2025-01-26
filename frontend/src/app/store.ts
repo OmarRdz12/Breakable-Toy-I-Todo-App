@@ -3,6 +3,7 @@ import { selectedTaskReducer, tasksReducer } from "../features/tasks/taskSlice"
 import paginationReducer from "../features/tasks/paginationSlice"
 import filterReducer from "../features/forms/filterSlice"
 import { createModalReducer, updateModalReducer } from "../features/forms/modalSlice"
+import statReducer from "../features/stats/statSlice"
 
 export const store = configureStore({
     reducer: {
@@ -11,7 +12,8 @@ export const store = configureStore({
         filters: filterReducer,
         creation: createModalReducer,
         update: updateModalReducer,
-        selectedTask: selectedTaskReducer
+        selectedTask: selectedTaskReducer,
+        stats: statReducer
     }
 })
 

@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { Task } from "../../components/ui/types"
-import { format } from "date-fns"
 
 interface Tasks {
     data: Task[]
@@ -10,7 +9,7 @@ const initialState: Tasks = {
     data: []
 }
 
-const initialStateSelected: Task  = {
+const initialStateSelected: Task = {
     name: "",
     priority: "",
     dueDate: "",

@@ -1,8 +1,7 @@
-import { PaginationProps, Space, TableProps } from "antd"
+import { PaginationProps } from "antd"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { changePage } from "../../features/tasks/paginationSlice"
 import BasePagination from "../ui/Pagination"
-import { Task } from "../ui/types"
 import NewTable from "../ui/NewTable"
 
 interface DataViewerProps {

@@ -8,6 +8,8 @@ import FilterForm from "./components/todo/FilterForm"
 import BaseButton from "./components/ui/Buttons"
 import CreationModal from "./components/todo/CreationModal"
 import { controlCreate } from "./features/forms/modalSlice"
+import Statsviewer from "./components/todo/Statsviewer"
+import { updateStats } from "./features/stats/statSlice"
 
 function App() {
   const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:9090"
@@ -19,6 +21,8 @@ function App() {
 
   const fetchData = async () => {
     const data = await axios.get(`${apiUrl}/todos?page=${currentPage}&limit=10&name=${filters.name}&state=${filters.state}&priority=${filters.priority}`)
+    const stats = await axios.get(`${apiUrl}/todos/stats`)
+    dispatch(updateStats(stats.data))
     dispatch(updateRecords(data.data.data))
     dispatch(reloadRecords(data.data.pages))
   }
@@ -37,6 +41,7 @@ function App() {
         modalCreate &&
         <CreationModal fetchData={fetchData} />
       }
+      <Statsviewer />
     </div>
   )
 }
