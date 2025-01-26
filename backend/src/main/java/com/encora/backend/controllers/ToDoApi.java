@@ -20,5 +20,4 @@ public interface ToDoApi {
 
     @PutMapping("/todos/{id}/done")
     ResponseEntity<Task> doneTodo(@PathVariable(value = "id") Long toDoId);
-
 }

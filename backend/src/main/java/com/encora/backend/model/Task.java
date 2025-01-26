@@ -1,6 +1,7 @@
 package com.encora.backend.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Task {
 
@@ -12,27 +13,27 @@ public class Task {
 
     private Long id;
     private boolean state;
-    private LocalDate doneDate;
-    private LocalDate creationDate;
+    private LocalDateTime doneDate;
+    private LocalDateTime creationDate;
     private LocalDate dueDate;
     private Priority priority;
-    private String name;
+    private String name;;
 
-    public Task(Long id, LocalDate doneDate, boolean state, LocalDate dueDate, LocalDate creationDate, Priority priority, String name) {
+    public Task(Long id, LocalDateTime doneDate, boolean state, LocalDate dueDate, Priority priority, String name) {
         this.doneDate = doneDate;
         this.id = id;
         this.state = state;
         this.dueDate = dueDate;
-        this.creationDate = creationDate;
+        this.creationDate = LocalDateTime.now();
         this.priority = priority;
         this.name = name;
     }
 
-    public LocalDate getCreationDate() {
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
 
-    public LocalDate getDoneDate() {
+    public LocalDateTime getDoneDate() {
         return doneDate;
     }
 
@@ -64,11 +65,11 @@ public class Task {
         this.state = state;
     }
 
-    public void setDoneDate(LocalDate doneDate) {
+    public void setDoneDate(LocalDateTime doneDate) {
         this.doneDate = doneDate;
     }
 
-    public void setCreationDate(LocalDate creationDate) {
+    public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
 

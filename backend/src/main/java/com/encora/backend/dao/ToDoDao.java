@@ -1,6 +1,7 @@
 package com.encora.backend.dao;
 
 import com.encora.backend.model.CustomResponse;
+import com.encora.backend.model.Stat;
 import com.encora.backend.model.Task;
 
 public interface ToDoDao {
@@ -9,4 +10,5 @@ public interface ToDoDao {
     Task updateTask(Task task, Long id);
     Task undoneTask(Long id);
     Task doneTask(Long id);
+    Stat getStats();
 }
