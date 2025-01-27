@@ -22,7 +22,7 @@ const DataViewer = ({ fetchData }: DataViewerProps) => {
     return (
         <div className="flex flex-col items-center w-full">
             <NewTable fetchData={fetchData} rows={tasks} columnSelector headers={["Name", "Priority", "Due Date", "Actions"]} />
-            <BasePagination onChange={onPageChange}  current={currentPage} total={totalRecords} align={"center"} className={"mt-10 w-11/12"} />
+            <BasePagination onChange={onPageChange} current={currentPage} total={totalRecords} align={"center"} className={"mt-10 w-11/12"} />
         </div>
     )
 }

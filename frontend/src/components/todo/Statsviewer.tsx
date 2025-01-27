@@ -7,16 +7,16 @@ const Statsviewer = () => {
             <div className="w-1/2 flex flex-col items-center justify-evenly">
                 <h4 className="font-bold">Average time to finish tasks</h4>
                 {
-                    <p>{`${stats.allDoneStats} horas`}</p>
+                    <p>{stats.allDoneStats === "00:00:00" ? "There are no statistics to show" : `${stats.allDoneStats} hh:mm:ss`}</p>
                 }
             </div>
             <div className="w-1/2 flex flex-col items-center">
                 <h4 className="font-bold">Average time to finish tasks by priority</h4>
                 {
                     <div className="w-full flex flex-col items-center">
-                        <p>High: {stats.highDoneStats === "00:00:00" ? "No hay estadisticas que mostrar" : `${stats.highDoneStats} horas`}</p>
-                        <p>Medium: {stats.mediumDoneStats === "00:00:00" ? "No hay estadisticas que mostrar" : `${stats.mediumDoneStats} horas`}</p>
-                        <p>Low: {stats.lowDoneStats === "00:00:00" ? "No hay estadisticas que mostrar" : `${stats.lowDoneStats} horas`}</p>
+                        <p>High: {stats.highDoneStats === "00:00:00" ? "There are no statistics to show" : `${stats.highDoneStats} hh:mm:ss`}</p>
+                        <p>Medium: {stats.mediumDoneStats === "00:00:00" ? "There are no statistics to show" : `${stats.mediumDoneStats} hh:mm:ss`}</p>
+                        <p>Low: {stats.lowDoneStats === "00:00:00" ? "There are no statistics to show" : `${stats.lowDoneStats} hh:mm:ss`}</p>
                     </div>
                 }
             </div>

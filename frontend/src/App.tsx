@@ -8,7 +8,7 @@ import FilterForm from "./components/todo/FilterForm"
 import BaseButton from "./components/ui/Buttons"
 import CreationModal from "./components/todo/CreationModal"
 import { controlCreate } from "./features/forms/modalSlice"
-import Statsviewer from "./components/todo/Statsviewer"
+import Statsviewer from "./components/todo/StatsViewer"
 import { updateStats } from "./features/stats/statSlice"
 
 function App() {

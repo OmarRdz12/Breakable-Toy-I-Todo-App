@@ -8,7 +8,7 @@ interface ButtonProps {
   text: string
   size?: SizeType
   className?: string
-  onClick?: () => void | { payload: any; type: "createModal/controlCreate"; } | { payload: any; type: "updateModal/controlUpdate"; }
+  onClick?: () => void | { payload: any; type: "createModal/controlCreate"; } | { payload: any; type: "updateModal/controlUpdate"; } | Promise<void>
   toolTip?: boolean
   shape?: ButtonShape
   icon?: ReactNode
@@ -39,9 +39,7 @@ const BaseButton = ({ text, htmlType, size, className, onClick, icon, shape, too
           >
             {text}
           </Button >
-
       }
-
     </>
   )
 }

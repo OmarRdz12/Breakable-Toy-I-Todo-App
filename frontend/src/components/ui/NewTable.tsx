@@ -7,6 +7,7 @@ import BaseButton from "./Buttons"
 import BaseCheckbox from "./Checkbox"
 import { Task } from "./types"
 import { MdDelete, MdEdit } from "react-icons/md"
+import axios from "axios"
 
 interface TableBaseProps {
     headers: string[]
@@ -16,6 +17,7 @@ interface TableBaseProps {
 }
 
 const NewTable = ({ headers, rows, fetchData, columnSelector = false }: TableBaseProps) => {
+    const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:9090"
     const updateModal = useAppSelector(state => state.update.open)
     const dispatch = useAppDispatch()
     const [stateCheckbox, setStateCheckbox] = useState<{ [key: number]: boolean }>({})
@@ -33,6 +35,12 @@ const NewTable = ({ headers, rows, fetchData, columnSelector = false }: TableBas
     const loadDataModal = (task: Task) => {
         dispatch(updateSelected(task))
         dispatch(controlUpdate(true))
+    }
+
+    const onDelete = async (id: number) => {
+        dispatch(controlUpdate(false))
+        const data = await axios.delete(`${apiUrl}/todos/${id}`)
+        await fetchData()
     }
 
     const changeStateCheckbox = (id: number, state: boolean) => {
@@ -69,12 +77,13 @@ const NewTable = ({ headers, rows, fetchData, columnSelector = false }: TableBas
                                 <td className="flex gap-1 py-3">
                                     <BaseButton
                                         text="delete"
-                                        className="hover:!text-red-500 hover:!border-red-500"
+                                        className={`${!row.state && 'hover:!text-red-500 hover:!border-red-500'} `}
                                         shape="circle"
                                         icon={<MdDelete />}
                                         toolTip
                                         htmlType="button"
                                         disabled={row.state}
+                                        onClick={() => onDelete(row.id)}
                                     />
                                     <BaseButton
                                         text="edit"
