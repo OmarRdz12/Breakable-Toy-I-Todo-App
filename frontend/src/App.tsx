@@ -2,7 +2,7 @@ import axios from "axios"
 import { useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "./app/hooks"
 import { reloadRecords } from "./features/tasks/paginationSlice"
-import { updateRecords } from "./features/tasks/taskSlice"
+import { stateRecords, updateRecords } from "./features/tasks/taskSlice"
 import DataViewer from "./components/todo/DataViewer"
 import FilterForm from "./components/todo/FilterForm"
 import BaseButton from "./components/ui/Buttons"
@@ -25,6 +25,7 @@ function App() {
     dispatch(updateStats(stats.data))
     dispatch(updateRecords(data.data.data))
     dispatch(reloadRecords(data.data.pages))
+    dispatch(stateRecords(data.data.data))
   }
 
   useEffect(() => {

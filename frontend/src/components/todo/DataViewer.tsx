@@ -9,7 +9,7 @@ interface DataViewerProps {
 }
 
 const DataViewer = ({ fetchData }: DataViewerProps) => {
-    const tasks = useAppSelector(state => state.tasks)
+    const tasks = useAppSelector(state => state.tasks.data)
     const totalRecords = useAppSelector(state => state.pagination.total)
     const currentPage = useAppSelector(state => state.pagination.current)
     const dispatch = useAppDispatch()
@@ -21,8 +21,8 @@ const DataViewer = ({ fetchData }: DataViewerProps) => {
 
     return (
         <div className="flex flex-col items-center w-full">
-            <NewTable fetchData={fetchData} rows={tasks.data} headers={["Name", "Priority", "Due Date", "Actions"]} />
-            <BasePagination onChange={onPageChange} current={currentPage} total={totalRecords} align={"center"} className={"mt-10 w-11/12"} />
+            <NewTable fetchData={fetchData} rows={tasks} columnSelector headers={["Name", "Priority", "Due Date", "Actions"]} />
+            <BasePagination onChange={onPageChange}  current={currentPage} total={totalRecords} align={"center"} className={"mt-10 w-11/12"} />
         </div>
     )
 }

@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit"
-import { selectedTaskReducer, tasksReducer } from "../features/tasks/taskSlice"
+import { selectedTaskReducer, stateTaskReducer, tasksReducer } from "../features/tasks/taskSlice"
 import paginationReducer from "../features/tasks/paginationSlice"
 import filterReducer from "../features/forms/filterSlice"
 import { createModalReducer, updateModalReducer } from "../features/forms/modalSlice"
@@ -13,7 +13,8 @@ export const store = configureStore({
         creation: createModalReducer,
         update: updateModalReducer,
         selectedTask: selectedTaskReducer,
-        stats: statReducer
+        stats: statReducer,
+        stateTask: stateTaskReducer,
     }
 })
 

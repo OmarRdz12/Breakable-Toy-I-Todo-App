@@ -45,7 +45,25 @@ export const selectedTaskSlice = createSlice({
     }
 })
 
+export const stateTaskSlice = createSlice({
+    name: 'stateTask',
+    initialState: false,
+    reducers: {
+        stateRecords: (state, action) => {
+            const list: Task[] = action.payload
+            state = list.every((item: Task) => item.state === true)
+            return state
+        },
+        updateStateRecords: (state, action) => {
+            (state: boolean) => !state
+            return state
+        }
+    }
+})
+
 export const { updateRecords } = taskSlice.actions
 export const tasksReducer = taskSlice.reducer
 export const { updateSelected } = selectedTaskSlice.actions
 export const selectedTaskReducer = selectedTaskSlice.reducer
+export const { stateRecords, updateStateRecords } = stateTaskSlice.actions
+export const stateTaskReducer = stateTaskSlice.reducer

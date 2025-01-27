@@ -12,19 +12,21 @@ interface ButtonProps {
   toolTip?: boolean
   shape?: ButtonShape
   icon?: ReactNode
+  disabled?: boolean
 }
 
-const BaseButton = ({ text, htmlType, size, className, onClick, icon, shape, toolTip = false }: ButtonProps) => {
+const BaseButton = ({ text, htmlType, size, className, onClick, icon, shape, toolTip = false, disabled = false }: ButtonProps) => {
   return (
     <>
       {
         toolTip ?
           <Tooltip title={text}>
-            <Button 
-              shape={shape} 
-              icon={icon} 
-              onClick={onClick} 
+            <Button
+              shape={shape}
+              icon={icon}
+              onClick={onClick}
               className={className}
+              disabled={disabled}
             />
           </Tooltip>
           :
@@ -33,6 +35,7 @@ const BaseButton = ({ text, htmlType, size, className, onClick, icon, shape, too
             size={size}
             className={className}
             onClick={onClick}
+            disabled={disabled}
           >
             {text}
           </Button >
