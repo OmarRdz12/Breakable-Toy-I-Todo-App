@@ -1,6 +1,6 @@
 package com.encora.backend.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Task {
 
@@ -12,13 +12,13 @@ public class Task {
 
     private Long id;
     private boolean state;
-    private Date doneDate;
-    private Date creationDate;
-    private Date dueDate;
+    private LocalDate doneDate;
+    private LocalDate creationDate;
+    private LocalDate dueDate;
     private Priority priority;
     private String name;
 
-    public Task(Long id, Date doneDate, boolean state, Date dueDate, Date creationDate, Priority priority, String name) {
+    public Task(Long id, LocalDate doneDate, boolean state, LocalDate dueDate, LocalDate creationDate, Priority priority, String name) {
         this.doneDate = doneDate;
         this.id = id;
         this.state = state;
@@ -28,11 +28,11 @@ public class Task {
         this.name = name;
     }
 
-    public Date getCreationDate() {
+    public LocalDate getCreationDate() {
         return creationDate;
     }
 
-    public Date getDoneDate() {
+    public LocalDate getDoneDate() {
         return doneDate;
     }
 
@@ -44,7 +44,7 @@ public class Task {
         return id;
     }
 
-    public Date getDueDate() {
+    public LocalDate getDueDate() {
         return dueDate;
     }
 
@@ -64,15 +64,15 @@ public class Task {
         this.state = state;
     }
 
-    public void setDoneDate(Date doneDate) {
+    public void setDoneDate(LocalDate doneDate) {
         this.doneDate = doneDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
     }
 
-    public void setDueDate(Date dueDate) {
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
 
@@ -80,7 +80,7 @@ public class Task {
         this.priority = priority;
     }
 
-    public void setName(String text) {
+    public void setName(String name) {
         this.name = name;
     }
 }

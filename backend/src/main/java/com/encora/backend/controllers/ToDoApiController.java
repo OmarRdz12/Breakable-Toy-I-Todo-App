@@ -1,5 +1,6 @@
 package com.encora.backend.controllers;
 
+import com.encora.backend.model.CustomResponse;
 import com.encora.backend.model.Task;
 import com.encora.backend.service.ToDoService;
 import org.springframework.http.HttpStatus;
@@ -8,8 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 public class ToDoApiController implements ToDoApi {
@@ -20,14 +19,14 @@ public class ToDoApiController implements ToDoApi {
     }
 
     @Override
-    public ResponseEntity<List<Task>> getToDos(
-            @RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
+    public ResponseEntity<CustomResponse<Task>> getToDos(
+            @RequestParam(name = "page", required = false, defaultValue = "1") int page,
             @RequestParam (name = "limit", required = false, defaultValue = "10") int limit,
             @RequestParam (name = "priority", required = false, defaultValue = "all") String priority,
             @RequestParam (name = "state", required = false, defaultValue = "all") String state,
             @RequestParam (name = "name", required = false, defaultValue = "") String name
     ) {
-        return new ResponseEntity<>(toDoService.getAllToDos(offset, limit, priority, state, name), HttpStatus.OK);
+        return new ResponseEntity<>(toDoService.getAllToDos(page, limit, priority, state, name), HttpStatus.OK);
     }
 
     @Override
