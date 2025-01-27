@@ -8,8 +8,9 @@ import FilterForm from "./components/todo/FilterForm"
 import BaseButton from "./components/ui/Buttons"
 import CreationModal from "./components/todo/CreationModal"
 import { controlCreate } from "./features/forms/modalSlice"
-import Statsviewer from "./components/todo/StatsViewer"
 import { updateStats } from "./features/stats/statSlice"
+import { Toaster } from "sonner"
+import Statsviewer from "./components/todo/Statsviewer"
 
 function App() {
   const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:9090"
@@ -43,6 +44,7 @@ function App() {
         <CreationModal fetchData={fetchData} />
       }
       <Statsviewer />
+      <Toaster richColors visibleToasts={10} />
     </div>
   )
 }

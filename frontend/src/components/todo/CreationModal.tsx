@@ -8,6 +8,7 @@ import axios from "axios"
 import dayjs, { Dayjs } from 'dayjs'
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { controlCreate } from "../../features/forms/modalSlice"
+import { toast } from "sonner"
 
 interface CreationModalProps {
     fetchData(): Promise<void>;
@@ -38,10 +39,17 @@ const CreationModal = ({ fetchData }: CreationModalProps) => {
     }
 
     const onSubmit = async () => {
-        dispatch(controlCreate(false))
-        const data = await axios.post(`${apiUrl}/todos`, formData)
-        await fetchData()
-        setFormData({ name: "", priority: "", dueDate: "" })
+        try {
+            dispatch(controlCreate(false))
+            const data = await axios.post(`${apiUrl}/todos`, formData)
+            await fetchData()
+            setFormData({ name: "", priority: "", dueDate: "" })
+            toast.success('Task has been created', {
+                description: `${data?.data.dueDate}`,
+            })
+        } catch (error) {
+            toast.error('Something went wrong')
+        }
     }
 
     const closeModal = () => {

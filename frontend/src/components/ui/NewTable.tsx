@@ -8,6 +8,7 @@ import BaseCheckbox from "./Checkbox"
 import { Task } from "./types"
 import { MdDelete, MdEdit } from "react-icons/md"
 import axios from "axios"
+import { toast } from "sonner"
 
 interface TableBaseProps {
     headers: string[]
@@ -38,9 +39,14 @@ const NewTable = ({ headers, rows, fetchData, columnSelector = false }: TableBas
     }
 
     const onDelete = async (id: number) => {
-        dispatch(controlUpdate(false))
-        const data = await axios.delete(`${apiUrl}/todos/${id}`)
-        await fetchData()
+        try {
+            dispatch(controlUpdate(false))
+            await axios.delete(`${apiUrl}/todos/${id}`)
+            await fetchData()
+            toast.warning('Task has been deleted')
+        } catch (error) {
+            toast.error('Something went wrong')
+        }
     }
 
     const changeStateCheckbox = (id: number, state: boolean) => {

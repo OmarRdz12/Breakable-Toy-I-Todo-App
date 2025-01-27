@@ -3,6 +3,7 @@ import axios from "axios"
 import { useState } from "react"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { updateStateRecords } from "../../features/tasks/taskSlice"
+import { toast } from "sonner"
 
 interface BaseCheckboxProps {
     originChecked?: boolean
@@ -31,18 +32,38 @@ const BaseCheckbox = ({ originChecked = false, id, fetchData, columnSelector, se
                 tasks.forEach(async (element) => {
                     if (element.state === stateRecords) {
                         if (stateRecords) {
-                            const stats = await axios.put(`${apiUrl}/todos/${element.id}/undone`)
+                            try {
+                                const data = await axios.put(`${apiUrl}/todos/${element.id}/undone`)
+                                toast.warning(`The task ${data.data.name} has been marked as undone successfully`)
+                            } catch (error) {
+                                toast.error('Something went wrong')
+                            }
                         } else {
-                            const stats = await axios.put(`${apiUrl}/todos/${element.id}/done`)
+                            try {
+                                const data = await axios.put(`${apiUrl}/todos/${element.id}/done`)
+                                toast.success(`The task ${data.data.name} has been marked as done successfully`)
+                            } catch (error) {
+                                toast.error('Something went wrong')
+                            }
                         }
                     }
                 })
             }
             else {
                 if (originChecked) {
-                    const stats = await axios.put(`${apiUrl}/todos/${id}/undone`)
+                    try {
+                        await axios.put(`${apiUrl}/todos/${id}/undone`)
+                        toast.warning('The task has been marked as undone successfully')
+                    } catch (error) {
+                        toast.error('Something went wrong')
+                    }
                 } else {
-                    const stats = await axios.put(`${apiUrl}/todos/${id}/done`)
+                    try {
+                        await axios.put(`${apiUrl}/todos/${id}/done`)
+                        toast.success('The task has been marked as done successfully')
+                    } catch (error) {
+                        toast.error('Something went wrong')
+                    }
                 }
             }
             await fetchData()
