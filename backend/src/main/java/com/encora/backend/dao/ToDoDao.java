@@ -10,5 +10,6 @@ public interface ToDoDao {
     Task updateTask(Task task, Long id);
     Task undoneTask(Long id);
     Task doneTask(Long id);
+    Task deleteTask(Long id);
     Stat getStats();
 }

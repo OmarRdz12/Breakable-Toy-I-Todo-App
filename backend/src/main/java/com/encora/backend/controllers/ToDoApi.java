@@ -20,4 +20,7 @@ public interface ToDoApi {
 
     @PutMapping("/todos/{id}/done")
     ResponseEntity<Task> doneTodo(@PathVariable(value = "id") Long toDoId);
+
+    @DeleteMapping("/todos/{id}")
+    ResponseEntity<Task> deleteTodo(@PathVariable(value = "id") Long toDoId);
 }

@@ -9,6 +9,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Repository
@@ -86,6 +87,19 @@ public class ToDoDaoImpl implements ToDoDao{
             selectedTask.setDoneDate(LocalDateTime.now());
         }
         return selectedTask;
+    }
+
+    @Override
+    public Task deleteTask(Long id) {
+        Iterator<Task> iterator = toDos.iterator();
+        while(iterator.hasNext()) {
+            Task task = iterator.next();
+            if (task.getId().equals(id)) {
+                iterator.remove();
+                return task;
+            }
+        }
+        return null;
     }
 
     public String getAverage(long time, int size) {

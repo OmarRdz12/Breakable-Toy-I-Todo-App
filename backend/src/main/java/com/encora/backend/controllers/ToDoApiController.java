@@ -48,4 +48,9 @@ public class ToDoApiController implements ToDoApi {
     public ResponseEntity<Task> doneTodo(Long toDoId) {
         return new ResponseEntity<>(toDoService.doneTask(toDoId), HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<Task> deleteTodo(Long toDoId) {
+        return new ResponseEntity<>(toDoService.deleteTask(toDoId), HttpStatus.OK);
+    }
 }

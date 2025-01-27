@@ -37,4 +37,9 @@ public class ToDoServiceImpl implements ToDoService{
     public Task doneTask(Long id) {
         return toDoDao.doneTask(id);
     }
+
+    @Override
+    public Task deleteTask(Long id) {
+        return toDoDao.deleteTask(id);
+    }
 }

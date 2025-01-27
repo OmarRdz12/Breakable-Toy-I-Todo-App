@@ -9,4 +9,5 @@ public interface ToDoService {
     Task updateTask(Task task, Long id);
     Task undoneTask(Long id);
     Task doneTask(Long id);
+    Task deleteTask(Long id);
 }
