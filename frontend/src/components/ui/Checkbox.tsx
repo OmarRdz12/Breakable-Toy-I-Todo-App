@@ -1,8 +1,7 @@
 import { Checkbox, CheckboxProps } from "antd"
 import axios from "axios"
 import { useState } from "react"
-import { useAppDispatch, useAppSelector } from "../../app/hooks"
-import { updateStateRecords } from "../../features/tasks/taskSlice"
+import { useAppSelector } from "../../app/hooks"
 import { toast } from "sonner"
 
 interface BaseCheckboxProps {
@@ -10,23 +9,16 @@ interface BaseCheckboxProps {
     id?: number
     fetchData(): Promise<void>
     columnSelector?: boolean
-    setChecked: ((id: number, state: boolean) => void) | (() => void)
 }
 
-const BaseCheckbox = ({ originChecked = false, id, fetchData, columnSelector, setChecked }: BaseCheckboxProps) => {
+const BaseCheckbox = ({ originChecked = false, id, fetchData, columnSelector }: BaseCheckboxProps) => {
     const stateRecords = useAppSelector(state => state.stateTask)
     const tasks = useAppSelector(state => state.tasks.data)
     const [disabled, setDisabled] = useState(false)
-    const dispatch = useAppDispatch()
     const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:9090"
 
     const onChange: CheckboxProps['onChange'] = async (e) => {
         try {
-            if (columnSelector) {
-                dispatch(updateStateRecords(stateRecords))
-            } else {
-                id && setChecked(id, e.target.checked)
-            }
             setDisabled(true)
             if (columnSelector) {
                 tasks.forEach(async (element) => {
@@ -66,7 +58,7 @@ const BaseCheckbox = ({ originChecked = false, id, fetchData, columnSelector, se
                     }
                 }
             }
-            await fetchData()
+            fetchData()
         } catch (error) {
             console.log(error)
         } finally {

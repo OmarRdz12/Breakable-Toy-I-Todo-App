@@ -1,6 +1,6 @@
 import { useAppSelector } from "../../app/hooks"
 
-const Statsviewer = () => {
+const StatsViewer = () => {
     const stats = useAppSelector(state => state.stats)
     return (
         <div className="w-11/12 p-4 my-4 flex border-2 justify-between border-gray-200 gap-2 box-border rounded shadow">
@@ -24,4 +24,4 @@ const Statsviewer = () => {
     )
 }
 
-export default Statsviewer
+export default StatsViewer

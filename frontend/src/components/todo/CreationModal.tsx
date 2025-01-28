@@ -42,7 +42,7 @@ const CreationModal = ({ fetchData }: CreationModalProps) => {
         try {
             dispatch(controlCreate(false))
             const data = await axios.post(`${apiUrl}/todos`, formData)
-            await fetchData()
+            fetchData()
             setFormData({ name: "", priority: "", dueDate: "" })
             toast.success('Task has been created', {
                 description: `${data?.data.dueDate}`,
