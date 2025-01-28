@@ -3,11 +3,12 @@ import InputDate from "../ui/InputDate"
 import InputSelect from "../ui/InputSelect"
 import InputText from "../ui/InputText"
 import BaseModal from "../ui/Modal"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import axios from "axios"
 import dayjs, { Dayjs } from 'dayjs'
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { controlUpdate } from "../../features/forms/modalSlice"
+import { toast } from "sonner"
 
 interface UpdateModalProps {
     fetchData(): Promise<void>
@@ -39,9 +40,14 @@ const UpdateModal = ({ fetchData }: UpdateModalProps) => {
     }
 
     const onSubmit = async () => {
-        dispatch(controlUpdate(false))
-        const data = await axios.put(`${apiUrl}/todos/${task.id}`, formData)
-        await fetchData()
+        try {
+            dispatch(controlUpdate(false))
+            await axios.put(`${apiUrl}/todos/${task.id}`, formData)
+            await fetchData()
+            toast.success("Task has been updated successfully")
+        } catch (error) {
+            toast.error("Something went wrong")
+        }
     }
 
     const closeModal = () => {
@@ -50,7 +56,7 @@ const UpdateModal = ({ fetchData }: UpdateModalProps) => {
 
     return (
         <>
-            <BaseModal onSubmit={onSubmit} closeModal={closeModal} openModal={updateModal} text="Save" title="New To Do" >
+            <BaseModal onSubmit={onSubmit} closeModal={closeModal} openModal={updateModal} text="Save" title="Update To Do" >
                 <form className="w-full flex flex-col p-4 gap-2">
                     <InputText
                         placeholder="Escribe aqui"
