@@ -20,9 +20,9 @@ public class ToDoDaoImpl implements ToDoDao{
     static {
         toDos.add(new Task(1L, null, false, LocalDate.of(2025, 1, 30), Task.Priority.HIGH, "Create the repository"));
         toDos.add(new Task(2L, null, false, LocalDate.of(2025, 1, 30), Task.Priority.MEDIUM, "Create the spring project"));
-        toDos.add(new Task(3L, null, false, LocalDate.of(2025, 1, 30), Task.Priority.HIGH, "Make the endpoints"));
-        toDos.add(new Task(4L, LocalDateTime.of(2025, 1, 26, 22, 51, 0), true, LocalDate.of(2025, 1, 30), Task.Priority.MEDIUM, "Test the endpoints"));
-        toDos.add(new Task(5L, LocalDateTime.of(2025, 1, 28, 11, 15, 0), true, LocalDate.of(2025, 1, 30), Task.Priority.HIGH, "Push commits"));
+        toDos.add(new Task(3L, LocalDateTime.of(2025, 1, 31, 10, 1), true, LocalDate.of(2025, 1, 30), Task.Priority.HIGH, "Make the endpoints"));
+        toDos.add(new Task(4L, LocalDateTime.of(2025, 1, 30, 22, 51, 0), true, LocalDate.of(2025, 1, 30), Task.Priority.MEDIUM, "Test the endpoints"));
+        toDos.add(new Task(5L, LocalDateTime.of(2025, 1, 31, 11, 15, 0), true, LocalDate.of(2025, 1, 30), Task.Priority.LOW, "Push commits"));
     }
 
     @Override
@@ -92,8 +92,6 @@ public class ToDoDaoImpl implements ToDoDao{
                         Task::getPriority, Comparator.reverseOrder())
                 );
             }
-
-
 
             int total = filterRecords.size();
             int offset = (page - 1) * limit;
