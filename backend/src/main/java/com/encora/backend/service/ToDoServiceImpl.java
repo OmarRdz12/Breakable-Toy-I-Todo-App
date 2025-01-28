@@ -14,8 +14,8 @@ public class ToDoServiceImpl implements ToDoService{
     }
 
     @Override
-    public CustomResponse<Task> getAllToDos(int page, int limit, String priority, String state, String name) {
-        return toDoDao.findAll(page, limit, priority, state, name);
+    public CustomResponse<Task> getAllToDos(int page, int limit, String priority, String state, String name, String dueDateSort, String prioritySort) {
+        return toDoDao.findAll(page, limit, priority, state, name, dueDateSort, prioritySort);
     }
 
     @Override

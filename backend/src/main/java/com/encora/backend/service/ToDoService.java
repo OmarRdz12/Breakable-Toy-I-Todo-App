@@ -4,7 +4,7 @@ import com.encora.backend.model.CustomResponse;
 import com.encora.backend.model.Task;
 
 public interface ToDoService {
-    CustomResponse<Task> getAllToDos(int page, int limit, String priority, String state, String name);
+    CustomResponse<Task> getAllToDos(int page, int limit, String priority, String state, String name, String dueDateSort, String prioritySort);
     Task save(Task task);
     Task updateTask(Task task, Long id);
     Task undoneTask(Long id);

@@ -24,9 +24,11 @@ public class ToDoApiController implements ToDoApi {
             @RequestParam (name = "limit", required = false, defaultValue = "10") int limit,
             @RequestParam (name = "priority", required = false, defaultValue = "all") String priority,
             @RequestParam (name = "state", required = false, defaultValue = "all") String state,
-            @RequestParam (name = "name", required = false, defaultValue = "") String name
+            @RequestParam (name = "name", required = false, defaultValue = "") String name,
+            @RequestParam (name = "dueDateSort", required = false, defaultValue = "") String dueDateSort,
+            @RequestParam (name = "prioritySort", required = false, defaultValue = "") String prioritySort
     ) {
-        return new ResponseEntity<>(toDoService.getAllToDos(page, limit, priority, state, name), HttpStatus.OK);
+        return new ResponseEntity<>(toDoService.getAllToDos(page, limit, priority, state, name, dueDateSort, prioritySort), HttpStatus.OK);
     }
 
     @Override

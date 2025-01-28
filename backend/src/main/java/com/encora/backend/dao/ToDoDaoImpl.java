@@ -9,6 +9,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -33,31 +34,84 @@ public class ToDoDaoImpl implements ToDoDao{
     }
 
     @Override
-    public CustomResponse<Task> findAll(int page, int limit, String priority, String state, String name) {
+    public CustomResponse<Task> findAll(int page, int limit, String priority, String state, String name, String dueDateSort, String prioritySort) {
         List <Task> filterRecords = toDos;
-        if (priority.compareTo("all") != 0) {
-            filterRecords = filterRecords.stream().filter(task -> task.getPriority().compareTo(Task.Priority.valueOf(priority)) == 0).toList();
-        }
-        if (state.compareTo("all") != 0) {
-            boolean stateInBoolean = state.compareTo("true") == 0;
-            filterRecords = filterRecords.stream().filter(task -> task.isState() == stateInBoolean).toList();
-        }
-        if (name.compareTo("") != 0) {
-            filterRecords = filterRecords.stream().filter(task -> task.getName().toLowerCase().contains(name.toLowerCase())).toList();
+
+        try {
+            if (priority.compareTo("all") != 0) {
+                filterRecords = new ArrayList<Task>(filterRecords.stream().filter(task -> task.getPriority().compareTo(Task.Priority.valueOf(priority)) == 0).toList());
+            }
+            if (state.compareTo("all") != 0) {
+                boolean stateInBoolean = state.compareTo("true") == 0;
+                filterRecords = new ArrayList<Task>(filterRecords.stream().filter(task -> task.isState() == stateInBoolean).toList());
+            }
+            if (name.compareTo("") != 0) {
+                filterRecords = new ArrayList<Task>(filterRecords.stream().filter(task -> task.getName().toLowerCase().contains(name.toLowerCase())).toList());
+            }
+
+            if (prioritySort.compareTo("") == 0 && dueDateSort.compareTo("") == 0) {
+                filterRecords.sort(Comparator.comparing(Task::getId));
+            }
+            if ((prioritySort.compareTo("asc") == 0 && dueDateSort.compareTo("asc") == 0)) {
+                filterRecords.sort(Comparator.comparing(
+                        Task::getPriority).thenComparing(Task::getDueDate, Comparator.nullsLast(Comparator.naturalOrder()))
+                );
+            }
+            if ((prioritySort.compareTo("desc") == 0 && dueDateSort.compareTo("desc") == 0)) {
+                filterRecords.sort(Comparator.comparing(
+                        Task::getPriority, Comparator.reverseOrder()).thenComparing(Task::getDueDate, Comparator.nullsLast(Comparator.reverseOrder()))
+                );
+            }
+            if ((prioritySort.compareTo("asc") == 0 && dueDateSort.compareTo("desc") == 0)) {
+                filterRecords.sort(Comparator.comparing(
+                        Task::getPriority).thenComparing(Task::getDueDate, Comparator.nullsLast(Comparator.reverseOrder()))
+                );
+            }
+            if ((prioritySort.compareTo("desc") == 0 && dueDateSort.compareTo("asc") == 0)) {
+                filterRecords.sort(Comparator.comparing(
+                        Task::getPriority, Comparator.reverseOrder()).thenComparing(Task::getDueDate, Comparator.nullsLast(Comparator.naturalOrder()))
+                );
+            }
+            if ((prioritySort.compareTo("") == 0 && dueDateSort.compareTo("asc") == 0)) {
+                filterRecords.sort(Comparator.comparing(
+                        Task::getDueDate, Comparator.nullsLast(Comparator.naturalOrder()))
+                );
+            }
+            if ((prioritySort.compareTo("asc") == 0 && dueDateSort.compareTo("") == 0)) {
+                filterRecords.sort(Comparator.comparing(
+                        Task::getPriority)
+                );
+            }
+            if ((prioritySort.compareTo("") == 0 && dueDateSort.compareTo("desc") == 0)) {
+                filterRecords.sort(Comparator.comparing(
+                        Task::getDueDate, Comparator.nullsLast(Comparator.reverseOrder()))
+                );
+            }
+            if ((prioritySort.compareTo("desc") == 0 && dueDateSort.compareTo("") == 0)) {
+                filterRecords.sort(Comparator.comparing(
+                        Task::getPriority, Comparator.reverseOrder())
+                );
+            }
+
+
+
+            int total = filterRecords.size();
+            int offset = (page - 1) * limit;
+
+            if (offset >= total) {
+                offset = Math.max(total - limit, 0);
+            }
+
+            int start = Math.min(offset, total);
+            int end = Math.min(start + limit, total);
+            filterRecords = filterRecords.subList(start, end);
+            return new CustomResponse<>(filterRecords, total, page);
+        } catch(UnsupportedOperationException e) {
+            e.printStackTrace();
+            return new CustomResponse<>(new ArrayList<Task>(), 0, 0);
         }
 
-        int total = filterRecords.size();
-        int offset = (page - 1) * limit;
 
-        if (offset >= total) {
-            offset = Math.max(total - limit, 0);
-        }
-
-        int start = Math.min(offset, total);
-        int end = Math.min(start + limit, total);
-        filterRecords = filterRecords.subList(start, end);
-
-        return new CustomResponse<>(filterRecords, total, page);
     }
 
     @Override
