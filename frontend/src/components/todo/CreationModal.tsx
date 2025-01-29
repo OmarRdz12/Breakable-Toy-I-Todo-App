@@ -39,6 +39,10 @@ const CreationModal = ({ fetchData }: CreationModalProps) => {
     }
 
     const onSubmit = async () => {
+        if(formData.name === "" || formData.priority === ""){
+            toast.error("Fill in all required fields")
+            return
+        }
         try {
             dispatch(controlCreate(false))
             const data = await axios.post(`${apiUrl}/todos`, formData)
