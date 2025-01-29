@@ -10,18 +10,19 @@ import CreationModal from "./components/todo/CreationModal"
 import { controlCreate } from "./features/forms/modalSlice"
 import { updateStats } from "./features/stats/statSlice"
 import { Toaster } from "sonner"
-import Statsviewer from "./components/todo/Statsviewer"
+import StatsViewer from "./components/todo/StatsViewer"
 
 function App() {
   const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:9090"
 
   const currentPage = useAppSelector(state => state.pagination.current)
   const filters = useAppSelector(state => state.filters)
+  const sorts = useAppSelector(state => state.sorts)
   const modalCreate = useAppSelector(state => state.creation)
   const dispatch = useAppDispatch()
 
   const fetchData = async () => {
-    const data = await axios.get(`${apiUrl}/todos?page=${currentPage}&limit=10&name=${filters.name}&state=${filters.state}&priority=${filters.priority}`)
+    const data = await axios.get(`${apiUrl}/todos?page=${currentPage}&limit=10&name=${filters.name}&state=${filters.state}&priority=${filters.priority}&dueDateSort=${sorts.dueDateSort}&prioritySort=${sorts.prioritySort}`)
     const stats = await axios.get(`${apiUrl}/todos/stats`)
     dispatch(updateStats(stats.data))
     dispatch(updateRecords(data.data.data))
@@ -31,7 +32,7 @@ function App() {
 
   useEffect(() => {
     fetchData()
-  }, [currentPage])
+  }, [currentPage, sorts])
 
   return (
     <div className="w-screen flex flex-col items-center">
@@ -43,7 +44,7 @@ function App() {
         modalCreate &&
         <CreationModal fetchData={fetchData} />
       }
-      <Statsviewer />
+      <StatsViewer />
       <Toaster richColors visibleToasts={10} />
     </div>
   )

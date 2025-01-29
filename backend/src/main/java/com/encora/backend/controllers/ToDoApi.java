@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 public interface ToDoApi {
     @GetMapping("/todos")
-    ResponseEntity<CustomResponse<Task>> getToDos(@RequestParam int page, int limit, String priority, String state, String name); //limit: number of records --- page: current page
+    ResponseEntity<CustomResponse<Task>> getToDos(@RequestParam int page, int limit, String priority, String state, String name, String dueDateSort, String prioritySort); //limit: number of records --- page: current page
 
     @PostMapping("/todos")
     ResponseEntity<Task> createTodo(@RequestBody(required = true) Task task);

@@ -6,9 +6,9 @@ import java.time.LocalDateTime;
 public class Task {
 
     public enum Priority {
-        LOW,
+        HIGH,
         MEDIUM,
-        HIGH
+        LOW
     }
 
     private Long id;

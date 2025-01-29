@@ -43,7 +43,7 @@ const UpdateModal = ({ fetchData }: UpdateModalProps) => {
         try {
             dispatch(controlUpdate(false))
             await axios.put(`${apiUrl}/todos/${task.id}`, formData)
-            await fetchData()
+            fetchData()
             toast.success("Task has been updated successfully")
         } catch (error) {
             toast.error("Something went wrong")

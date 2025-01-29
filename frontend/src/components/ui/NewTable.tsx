@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { controlUpdate } from "../../features/forms/modalSlice"
 import { updateSelected } from "../../features/tasks/taskSlice"
@@ -9,9 +8,22 @@ import { Task } from "./types"
 import { MdDelete, MdEdit } from "react-icons/md"
 import axios from "axios"
 import { toast } from "sonner"
+import { MdArrowDropUp, MdArrowDropDown } from "react-icons/md";
+import { onChangeSort } from "../../features/forms/filterSlice"
+
+type FilterStateB = {
+    prioritySort?: "asc" | "desc" | ""
+    dueDateSort?: "asc" | "desc" | ""
+}
+
+export interface HeadersProps {
+    title: string
+    sorter?: boolean
+    titleSorter?: keyof FilterStateB
+}
 
 interface TableBaseProps {
-    headers: string[]
+    headers: HeadersProps[]
     rows: Task[]
     fetchData(): Promise<void>
     columnSelector?: boolean
@@ -20,18 +32,16 @@ interface TableBaseProps {
 const NewTable = ({ headers, rows, fetchData, columnSelector = false }: TableBaseProps) => {
     const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:9090"
     const updateModal = useAppSelector(state => state.update.open)
+    const sorts = useAppSelector(state => state.sorts)
     const dispatch = useAppDispatch()
-    const [stateCheckbox, setStateCheckbox] = useState<{ [key: number]: boolean }>({})
-    useEffect(() => {
-        const initialState = rows.reduce(
-            (acc, row) => {
-                acc[row.id] = row.state
-                return acc
-            },
-            {} as { [key: number]: boolean }
-        )
-        setStateCheckbox(initialState)
-    }, [rows])
+
+
+    const handleChange = (name: string | undefined) => {
+        if (name === 'prioritySort')
+            dispatch(onChangeSort({ [name]: sorts.prioritySort === "" ? "asc" : (sorts.prioritySort === "asc" ? "desc" : "") }))
+        if (name === 'dueDateSort')
+            dispatch(onChangeSort({ [name]: sorts.dueDateSort === "" ? "asc" : (sorts.dueDateSort === "asc" ? "desc" : "") }))
+    }
 
     const loadDataModal = (task: Task) => {
         dispatch(updateSelected(task))
@@ -49,13 +59,6 @@ const NewTable = ({ headers, rows, fetchData, columnSelector = false }: TableBas
         }
     }
 
-    const changeStateCheckbox = (id: number, state: boolean) => {
-        setStateCheckbox((prevState) => ({
-            ...prevState,
-            [id]: state
-        }))
-    }
-
     return (
         <div className="w-full mt-2 flex justify-center">
             <table className="w-11/12 table-auto border-collapse">
@@ -63,11 +66,23 @@ const NewTable = ({ headers, rows, fetchData, columnSelector = false }: TableBas
                     <tr className="text-left bg-gray-100 text-sm">
                         {
                             columnSelector &&
-                            <th><BaseCheckbox columnSelector={true} fetchData={fetchData} setChecked={() => { }} /></th>
+                            <th><BaseCheckbox columnSelector={true} fetchData={fetchData} /></th>
                         }
                         {
                             headers.map((header, key) => (
-                                <th className="py-3 pl-1" key={key}> {header} </th>
+                                <th className="py-3 pl-1" key={key}>
+                                    <div className="flex items-center gap-2">
+                                        {header.title}
+                                        {
+                                            header.sorter &&
+                                            <div className="flex flex-col hover:cursor-pointer text-sm" onClick={() => handleChange(header.titleSorter)}>
+                                                <MdArrowDropUp className={`${header.titleSorter && sorts[header.titleSorter] === 'asc' && 'text-blue-500'}`} />
+                                                <MdArrowDropDown className={`${header.titleSorter && sorts[header.titleSorter] === 'desc' && 'text-blue-500'}`} />
+                                            </div>
+                                        }
+                                    </div>
+
+                                </th>
                             ))
                         }
                     </tr>
@@ -76,7 +91,7 @@ const NewTable = ({ headers, rows, fetchData, columnSelector = false }: TableBas
                     {
                         rows.map((row) => (
                             <tr className="border-b" key={row.id}>
-                                <td className="py-3"><BaseCheckbox setChecked={changeStateCheckbox} fetchData={fetchData} id={row.id} originChecked={stateCheckbox[row.id]} /></td>
+                                <td className="py-3"><BaseCheckbox fetchData={fetchData} id={row.id} originChecked={row.state} /></td>
                                 <td className="py-3">{row.name}</td>
                                 <td className="py-3">{row.priority}</td>
                                 <td className="py-3">{row.dueDate}</td>
@@ -102,7 +117,6 @@ const NewTable = ({ headers, rows, fetchData, columnSelector = false }: TableBas
                                     />
                                 </td>
                             </tr>
-
                         ))
                     }
                 </tbody>
