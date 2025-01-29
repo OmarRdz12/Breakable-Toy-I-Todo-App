@@ -11,6 +11,7 @@ import { controlCreate } from "./features/forms/modalSlice"
 import { updateStats } from "./features/stats/statSlice"
 import { Toaster } from "sonner"
 import StatsViewer from "./components/todo/StatsViewer"
+import { IoMdAddCircle } from "react-icons/io";
 
 function App() {
   const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:9090"
@@ -22,7 +23,8 @@ function App() {
   const dispatch = useAppDispatch()
 
   const fetchData = async () => {
-    const data = await axios.get(`${apiUrl}/todos?page=${currentPage}&limit=10&name=${filters.name}&state=${filters.state}&priority=${filters.priority}&dueDateSort=${sorts.dueDateSort}&prioritySort=${sorts.prioritySort}`)
+    const url = `${apiUrl}/todos?page=${currentPage}&limit=10&name=${filters.name.replace(/\/+$#/, '').replace(/\\/g, '').replace(/[{}[\]\\|]/g, '')}&state=${filters.state}&priority=${filters.priority}&dueDateSort=${sorts.dueDateSort}&prioritySort=${sorts.prioritySort}`
+    const data = await axios.get(url)
     const stats = await axios.get(`${apiUrl}/todos/stats`)
     dispatch(updateStats(stats.data))
     dispatch(updateRecords(data.data.data))
@@ -38,7 +40,10 @@ function App() {
     <div className="w-screen flex flex-col items-center">
       <h1 className="my-2 font-bold text-3xl">Todo App</h1>
       <FilterForm fetchData={fetchData} />
-      <BaseButton onClick={() => dispatch(controlCreate(true))} text="New Todo" htmlType="button" />
+      <div className="w-11/12 flex items-start">
+        <BaseButton onClick={() => dispatch(controlCreate(true))} text="New Todo" htmlType="button" size="large" icon={<IoMdAddCircle/>} className=" bg-zinc-900 text-white shadow hover:!bg-zinc-700 
+                        hover:!border-zinc-700 hover:!text-white" />
+      </div>
       <DataViewer fetchData={fetchData} />
       {
         modalCreate &&
