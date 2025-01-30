@@ -13,7 +13,26 @@ Likewise, there is a section that shows the average time it takes a person to co
 ``` bash
     git clone https://github.com/OmarRdz12/Breakable-Toy-I-Todo-App.git
 ```
-
+2. You need:
+```bash
+    Java version: 21.0.5
+    Node version: 18.20.5
+```
+3. Run frontend:
+```bash
+    cd frontend
+    npm install
+    npm run dev
+```
+4. Run backend:
+```bash
+    cd backend
+    mvn spring-boot:run 
+```
+5. You can read the individual readme to better understand the project
+- [Frontend Readme](frontend/README.md)
+- [Backend Readme](backend/README.md)
+  
 ## Ports used
 - **Front-end:** `8080`
 - **Back-end:** `9090`
