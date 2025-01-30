@@ -23,7 +23,7 @@ function App() {
   const dispatch = useAppDispatch()
 
   const fetchData = async () => {
-    const url = `${apiUrl}/todos?page=${currentPage}&limit=10&name=${filters.name.replace(/\/+$#/, '').replace(/\\/g, '').replace(/[{}[\]\\|]/g, '')}&state=${filters.state}&priority=${filters.priority}&dueDateSort=${sorts.dueDateSort}&prioritySort=${sorts.prioritySort}`
+    const url = `${apiUrl}/todos?page=${currentPage}&limit=10&name=${encodeURIComponent(filters.name)}&state=${filters.state}&priority=${filters.priority}&dueDateSort=${sorts.dueDateSort}&prioritySort=${sorts.prioritySort}`
     const data = await axios.get(url)
     const stats = await axios.get(`${apiUrl}/todos/stats`)
     dispatch(updateStats(stats.data))
