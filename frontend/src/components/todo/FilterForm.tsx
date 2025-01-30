@@ -2,7 +2,7 @@ import InputSelect from "../ui/InputSelect"
 import InputText from "../ui/InputText"
 import { useAppDispatch } from "../../app/hooks"
 import { onChange } from "../../features/forms/filterSlice"
-import BaseButton from "../ui/Buttons"
+import BaseButton from "../ui/Buttons/Buttons"
 
 interface FilterProps {
     fetchData(): Promise<void>;
