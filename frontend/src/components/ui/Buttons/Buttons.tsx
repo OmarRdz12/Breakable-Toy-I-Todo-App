@@ -39,6 +39,7 @@ const BaseButton = ({ text, htmlType, size, className, onClick, icon, shape, too
             onClick={onClick}
             disabled={disabled}
             id={id}
+            icon={icon}
           >
             {text}
           </Button >

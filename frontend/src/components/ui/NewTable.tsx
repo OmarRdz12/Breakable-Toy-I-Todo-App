@@ -10,6 +10,7 @@ import axios from "axios"
 import { toast } from "sonner"
 import { MdArrowDropUp, MdArrowDropDown } from "react-icons/md";
 import { onChangeSort } from "../../features/forms/filterSlice"
+import { differenceInDays, parseISO } from "date-fns"
 
 type FilterStateB = {
     prioritySort?: "asc" | "desc" | ""
@@ -52,7 +53,7 @@ const NewTable = ({ headers, rows, fetchData, columnSelector = false }: TableBas
         try {
             dispatch(controlUpdate(false))
             await axios.delete(`${apiUrl}/todos/${id}`)
-            await fetchData()
+            fetchData()
             toast.warning('Task has been deleted')
         } catch (error) {
             toast.error('Something went wrong')
@@ -61,12 +62,14 @@ const NewTable = ({ headers, rows, fetchData, columnSelector = false }: TableBas
 
     return (
         <div className="w-full mt-2 flex justify-center">
-            <table className="w-11/12 table-auto border-collapse">
+            <table className="w-11/12 table-auto border-collapse border-black">
                 <thead>
-                    <tr className="text-left bg-gray-100 text-sm">
+                    <tr className="text-left bg-zinc-900 text-white text-sm font-semibold">
                         {
                             columnSelector &&
-                            <th><BaseCheckbox columnSelector={true} fetchData={fetchData} /></th>
+                            <th className="text-center">
+                                <BaseCheckbox columnSelector={true} fetchData={fetchData} />
+                            </th>
                         }
                         {
                             headers.map((header, key) => (
@@ -90,9 +93,11 @@ const NewTable = ({ headers, rows, fetchData, columnSelector = false }: TableBas
                 <tbody>
                     {
                         rows.map((row) => (
-                            <tr className="border-b" key={row.id}>
-                                <td className="py-3"><BaseCheckbox fetchData={fetchData} id={row.id} originChecked={row.state} /></td>
-                                <td className="py-3">{row.name}</td>
+                            <tr className={`border-b ${row.dueDate && differenceInDays(parseISO(row.dueDate), new Date()) <= 7 ? 'bg-red-300': row.dueDate && differenceInDays(parseISO(row.dueDate), new Date()) <= 14 ? 'bg-yellow-300' : row.dueDate !== null && 'bg-green-300'  }`} key={row.id}>
+                                <td className="flex justify-center items-center">
+                                    <BaseCheckbox fetchData={fetchData} id={row.id} originChecked={row.state} />
+                                </td>
+                                <td className={`py-3 ${row.state === true && 'line-through'}`}>{row.name}</td>
                                 <td className="py-3">{row.priority}</td>
                                 <td className="py-3">{row.dueDate}</td>
                                 <td className="flex gap-1 py-3">

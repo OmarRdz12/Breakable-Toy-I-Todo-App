@@ -1,50 +1,29 @@
-# React + TypeScript + Vite
+# Breakable-Toy-I-Todo-App (frontend)
+## Description
+The application interface is divided into several sections that function as components of the application.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+- Filter section: Tasks can be filtered by their name or part of their name, by priority, and by the status they are in.
+- Task section: Tasks in memory are displayed in table format, 10 at a time. They can be sorted by priority and/or due date. Edits and deletions can also be made in this section.
+- Statistics section: This section shows the average time the user has from the moment a task is created until it is marked as completed.
 
-Currently, two official plugins are available:
+### Technologies used
+- Vite: is an application compilation tool. (https://vite.dev/)
+- Antd: component library for react. (https://ant.design/)
+- Axios: helps to make HTTP requests and handle responses. (https://axios-http.com/docs/intro)
+- React-icons: Icon library for some sections (https://react-icons.github.io/react-icons/)
+- Sonner: Library to render toasts to display messages (https://sonner.emilkowal.ski/)
+- Redux Toolkit: Library to manage states between components. (https://redux-toolkit.js.org/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Run and test
+1. Run :
+``` bash
+    npm install
+    npm run dev
+```
+2. Test :
+``` bash
+    npm run test
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+## Ports used
+- **Front-end:** `8080`
