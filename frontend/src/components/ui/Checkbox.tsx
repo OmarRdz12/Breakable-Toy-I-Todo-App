@@ -27,6 +27,7 @@ const BaseCheckbox = ({ originChecked = false, id, fetchData, columnSelector }: 
                             try {
                                 const data = await axios.put(`${apiUrl}/todos/${element.id}/undone`)
                                 toast.warning(`The task ${data.data.name} has been marked as undone successfully`)
+                                fetchData()
                             } catch (error) {
                                 toast.error('Something went wrong')
                             }
@@ -34,6 +35,7 @@ const BaseCheckbox = ({ originChecked = false, id, fetchData, columnSelector }: 
                             try {
                                 const data = await axios.put(`${apiUrl}/todos/${element.id}/done`)
                                 toast.success(`The task ${data.data.name} has been marked as done successfully`)
+                                fetchData()
                             } catch (error) {
                                 toast.error('Something went wrong')
                             }
