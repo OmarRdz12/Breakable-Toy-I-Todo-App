@@ -40,7 +40,7 @@ const UpdateModal = ({ fetchData }: UpdateModalProps) => {
     }
 
     const onSubmit = async () => {
-        if(formData.name === "" || formData.priority === ""){
+        if (!formData.name || !formData.priority) {
             toast.error("Fill in all required fields")
             return
         }
