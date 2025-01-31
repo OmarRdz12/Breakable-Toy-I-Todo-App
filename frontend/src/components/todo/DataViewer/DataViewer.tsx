@@ -1,8 +1,8 @@
 import { PaginationProps } from "antd"
-import { useAppDispatch, useAppSelector } from "../../app/hooks"
-import { changePage } from "../../features/tasks/paginationSlice"
-import BasePagination from "../ui/Pagination/Pagination"
-import NewTable, { HeadersProps } from "../ui/NewTable"
+import { useAppDispatch, useAppSelector } from "../../../app/hooks"
+import { changePage } from "../../../features/tasks/paginationSlice"
+import BasePagination from "../../ui/Pagination/Pagination"
+import NewTable, { HeadersProps } from "../../ui/NewTable"
 
 interface DataViewerProps {
     fetchData(): Promise<void>

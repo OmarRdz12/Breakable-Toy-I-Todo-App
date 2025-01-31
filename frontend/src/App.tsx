@@ -3,15 +3,16 @@ import { useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "./app/hooks"
 import { reloadRecords } from "./features/tasks/paginationSlice"
 import { stateRecords, updateRecords } from "./features/tasks/taskSlice"
-import DataViewer from "./components/todo/DataViewer"
+import DataViewer from "./components/todo/DataViewer/DataViewer"
 import FilterForm from "./components/todo/FilterForm"
 import BaseButton from "./components/ui/Buttons/Buttons"
 import CreationModal from "./components/todo/CreationModal"
 import { controlCreate } from "./features/forms/modalSlice"
 import { updateStats } from "./features/stats/statSlice"
 import { Toaster } from "sonner"
-import StatsViewer from "./components/todo/StatsViewer"
+
 import { IoMdAddCircle } from "react-icons/io";
+import StatsViewer from "./components/todo/StatsViewer/StatsViewer"
 
 function App() {
   const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:9090"
