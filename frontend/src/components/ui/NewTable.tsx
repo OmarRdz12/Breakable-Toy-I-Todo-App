@@ -110,6 +110,7 @@ const NewTable = ({ headers, rows, fetchData, columnSelector = false }: TableBas
                                         htmlType="button"
                                         disabled={row.state}
                                         onClick={() => onDelete(row.id)}
+                                        id="delete"
                                     />
                                     <BaseButton
                                         text="edit"
@@ -119,6 +120,7 @@ const NewTable = ({ headers, rows, fetchData, columnSelector = false }: TableBas
                                         htmlType="button"
                                         onClick={() => loadDataModal(row)}
                                         disabled={row.state}
+                                        id="edit"
                                     />
                                 </td>
                             </tr>

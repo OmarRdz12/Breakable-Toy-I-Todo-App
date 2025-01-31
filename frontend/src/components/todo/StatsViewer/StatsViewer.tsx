@@ -1,4 +1,4 @@
-import { useAppSelector } from "../../app/hooks"
+import { useAppSelector } from "../../../app/hooks"
 
 const StatsViewer = () => {
     const stats = useAppSelector(state => state.stats)

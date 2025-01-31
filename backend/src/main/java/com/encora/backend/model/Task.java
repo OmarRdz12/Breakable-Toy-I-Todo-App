@@ -17,7 +17,7 @@ public class Task {
     private LocalDateTime creationDate;
     private LocalDate dueDate;
     private Priority priority;
-    private String name;;
+    private String name;
 
     public Task(Long id, LocalDateTime doneDate, boolean state, LocalDate dueDate, Priority priority, String name) {
         this.doneDate = doneDate;
