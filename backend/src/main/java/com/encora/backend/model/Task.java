@@ -1,5 +1,8 @@
 package com.encora.backend.model;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -16,7 +19,9 @@ public class Task {
     private LocalDateTime doneDate;
     private LocalDateTime creationDate;
     private LocalDate dueDate;
+    @NotNull(message = "Priority cannot be null")
     private Priority priority;
+    @NotBlank(message = "Name cannot be null")
     private String name;
 
     public Task(Long id, LocalDateTime doneDate, boolean state, LocalDate dueDate, Priority priority, String name) {

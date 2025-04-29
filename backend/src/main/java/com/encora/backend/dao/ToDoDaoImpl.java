@@ -8,22 +8,12 @@ import org.springframework.stereotype.Repository;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @Repository
 public class ToDoDaoImpl implements ToDoDao{
     private static final List<Task> toDos = new ArrayList<>();
 
-    static {
-        toDos.add(new Task(1L, null, false, LocalDate.of(2025, 1, 30), Task.Priority.HIGH, "Create the repository"));
-        toDos.add(new Task(2L, null, false, LocalDate.of(2025, 1, 30), Task.Priority.MEDIUM, "Create the spring project"));
-        toDos.add(new Task(3L, LocalDateTime.of(2025, 1, 31, 10, 1), true, LocalDate.of(2025, 1, 30), Task.Priority.HIGH, "Make the endpoints"));
-        toDos.add(new Task(4L, LocalDateTime.of(2025, 1, 30, 22, 51, 0), true, LocalDate.of(2025, 1, 30), Task.Priority.MEDIUM, "Test the endpoints"));
-        toDos.add(new Task(5L, LocalDateTime.of(2025, 1, 31, 11, 15, 0), true, LocalDate.of(2025, 1, 30), Task.Priority.LOW, "Push commits"));
-    }
 
     @Override
     public Task save(Task task) {
@@ -114,7 +104,13 @@ public class ToDoDaoImpl implements ToDoDao{
 
     @Override
     public Task updateTask(Task task, Long id) {
-        Task selectedTask = toDos.stream().filter(toDo -> toDo.getId() == id).toList().getFirst();
+        //Task selectedTask = toDos.stream().filter(toDo -> toDo.getId() == id).toList().getFirst();
+        Optional<Task> optionalTask = toDos.stream()
+                .filter(toDo -> toDo.getId().equals(id))
+                .findFirst();
+        if (optionalTask.isEmpty())
+            return null;
+        Task selectedTask = optionalTask.get();
         selectedTask.setName(task.getName());
         selectedTask.setPriority(task.getPriority());
         selectedTask.setDueDate(task.getDueDate());
@@ -123,7 +119,10 @@ public class ToDoDaoImpl implements ToDoDao{
 
     @Override
     public Task undoneTask(Long id) {
-        Task selectedTask = toDos.stream().filter(toDo -> toDo.getId().equals(id)).toList().getFirst();
+        Optional<Task> optionalTask = toDos.stream().filter(toDo -> toDo.getId().equals(id)).findFirst();
+        if (optionalTask.isEmpty())
+            return null;
+        Task selectedTask = optionalTask.get();
         if (selectedTask.isState()) {
             selectedTask.setState(false);
             selectedTask.setDoneDate(null);
@@ -133,7 +132,10 @@ public class ToDoDaoImpl implements ToDoDao{
 
     @Override
     public Task doneTask(Long id) {
-        Task selectedTask = toDos.stream().filter(toDo -> toDo.getId().equals(id)).toList().getFirst();
+        Optional<Task> optionalTask = toDos.stream().filter(toDo -> toDo.getId().equals(id)).findFirst();
+        if (optionalTask.isEmpty())
+            return null;
+        Task selectedTask = optionalTask.get();
         if (!selectedTask.isState()) {
             selectedTask.setState(true);
             selectedTask.setDoneDate(LocalDateTime.now());
