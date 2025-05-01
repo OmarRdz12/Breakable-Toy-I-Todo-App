@@ -1,6 +1,5 @@
 package com.encora.backend.dao;
 
-import com.encora.backend.model.CustomResponse;
 import com.encora.backend.model.Stat;
 import com.encora.backend.model.Task;
 import org.junit.jupiter.api.Assertions;
@@ -19,6 +18,7 @@ public class ToDoDaoTest {
     @BeforeEach
     public void setUp() {
         toDoDao = new ToDoDaoImpl();
+        toDoDao.findAll().clear();
     }
 
     @Test
@@ -32,36 +32,63 @@ public class ToDoDaoTest {
 
     @Test
     public void updateTask() {
-        Task update = new Task(2L, null, false, LocalDate.of(2025, 1, 30), Task.Priority.LOW, "test edited");
-        Task updateTask = toDoDao.updateTask(update, 2L);
-        Assertions.assertNotNull(updateTask.getId());
-        Assertions.assertEquals(LocalDate.of(2025, 1, 30), updateTask.getDueDate());
-        Assertions.assertEquals("test edited", updateTask.getName());
-        Assertions.assertFalse(updateTask.isState());
+        Task original = new Task( 1L, null, false, LocalDate.of(2025, 1, 28), Task.Priority.HIGH, "original name");
+        Task saved = toDoDao.save(original);
+        Task update = new Task(1L, null, false, LocalDate.of(2025, 1, 30), Task.Priority.LOW, "test edited");
+
+        Task result = toDoDao.updateTask(update, saved.getId());
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(1L, result.getId());
+        Assertions.assertEquals(LocalDate.of(2025, 1, 30), result.getDueDate());
+        Assertions.assertEquals("test edited", result.getName());
+        Assertions.assertEquals(Task.Priority.LOW, result.getPriority());
+    }
+
+    @Test
+    public void updateTask_emptyTodos_shouldReturnNul() {
+        Task update = new Task(1L, null, false, LocalDate.of(2025, 1, 30), Task.Priority.LOW, "test edited");
+        Task result = toDoDao.updateTask(update, 1L);
+        Assertions.assertNull(result);
     }
 
     @Test
     public void doneTask() {
-        Task updateTask = toDoDao.doneTask(2L);
-        Assertions.assertNotNull(updateTask.getId());
-        Assertions.assertNotNull(updateTask.getDoneDate());
-        Assertions.assertTrue(updateTask.isState());
+        Task original = new Task( 1L, null, false, LocalDate.of(2025, 1, 28), Task.Priority.HIGH, "original name");
+        Task saved = toDoDao.save(original);
+        Task doneTask = toDoDao.doneTask(saved.getId());
+        Assertions.assertNotNull(doneTask.getId());
+        Assertions.assertNotNull(doneTask.getDoneDate());
+        Assertions.assertTrue(doneTask.isState());
+    }
+
+    @Test
+    public void doneTask_emptyTodos_shouldReturnNul() {
+        Task result = toDoDao.doneTask(1L);
+        Assertions.assertNull(result);
     }
 
     @Test
     public void undoneTask() {
-        Task updateTask = toDoDao.undoneTask(2L);
+        Task original = new Task( 1L, null, true, LocalDate.of(2025, 1, 28), Task.Priority.HIGH, "original name");
+        Task saved = toDoDao.save(original);
+        Task updateTask = toDoDao.undoneTask(saved.getId());
         Assertions.assertNotNull(updateTask.getId());
         Assertions.assertNull(updateTask.getDoneDate());
         Assertions.assertFalse(updateTask.isState());
     }
 
     @Test
+    public void undoneTask_emptyTodos_shouldReturnNul() {
+        Task result = toDoDao.undoneTask(1L);
+        Assertions.assertNull(result);
+    }
+
+    @Test
     public void deleteTask() {
-        Task udateTask = toDoDao.deleteTask(2L);
-        Assertions.assertNotNull(udateTask.getId());
-        Task alreadyUpdated = toDoDao.deleteTask(2L);
-        Assertions.assertNull(alreadyUpdated);
+        Task original = new Task( 1L, null, true, LocalDate.of(2025, 1, 28), Task.Priority.HIGH, "original name");
+        Task saved = toDoDao.save(original);
+        Task deletedTask = toDoDao.deleteTask(saved.getId());
+        Assertions.assertNotNull(deletedTask.getId());
     }
 
     @Test
@@ -99,79 +126,30 @@ public class ToDoDaoTest {
     }
 
     @Test
-    public void getAllRecords() {
-        CustomResponse<Task> response = toDoDao.findAll(1, 10, "all", "all", "", "", "");
-        Assertions.assertEquals(5, response.getPages());
-        Assertions.assertEquals(1, response.getOffset());
-        Assertions.assertNotNull(response.getData());
+    public void testGetStats_MultipleTasksAverageTime() {
+        toDoDao.findAll().clear();
 
+        Task high = new Task(1L, LocalDateTime.of(2025, 4, 1, 10, 10), true, LocalDate.now(), Task.Priority.HIGH, "High Task");
+        high.setCreationDate(LocalDateTime.of(2025, 4, 1, 10, 0));
+        toDoDao.save(high);
+
+        Task medium = new Task(2L, LocalDateTime.of(2025, 4, 1, 11, 5), true, LocalDate.now(), Task.Priority.MEDIUM, "Medium Task");
+        medium.setCreationDate(LocalDateTime.of(2025, 4, 1, 11, 0));
+        toDoDao.save(medium);
+
+        Task low = new Task(3L, LocalDateTime.of(2025, 4, 1, 12, 15), true, LocalDate.now(), Task.Priority.LOW, "Low Task");
+        low.setCreationDate(LocalDateTime.of(2025, 4, 1, 12, 0));
+        toDoDao.save(low);
+
+        Stat stats = toDoDao.getStats();
+
+        Assertions.assertEquals("0:10:0", stats.getAllDoneStats());
+
+        Assertions.assertEquals("0:10:0", stats.getHighDoneStats());
+        Assertions.assertEquals("0:5:0", stats.getMediumDoneStats());
+        Assertions.assertEquals("0:15:0", stats.getLowDoneStats());
     }
 
-    @Test
-    public void getPriorityRecords() {
-        CustomResponse<Task> response = toDoDao.findAll(1, 10, "HIGH", "all", "", "", "");
-        Assertions.assertEquals(2, response.getPages());
-        Assertions.assertEquals(1, response.getOffset());
-        Assertions.assertNotNull(response.getData());
-    }
-
-    @Test
-    public void getStateRecords() {
-        CustomResponse<Task> response = toDoDao.findAll(1, 10, "all", "true", "", "", "");
-        Assertions.assertEquals(3, response.getPages());
-        Assertions.assertEquals(1, response.getOffset());
-        Assertions.assertNotNull(response.getData());
-    }
-
-    @Test
-    public void getNameRecords() {
-        CustomResponse<Task> response = toDoDao.findAll(1, 10, "all", "all", "push", "", "");
-        Assertions.assertEquals(1, response.getPages());
-        Assertions.assertEquals(1, response.getOffset());
-        Assertions.assertNotNull(response.getData());
-
-    }
-
-    @Test
-    public void getPrioritySortRecords() {
-        CustomResponse<Task> response = toDoDao.findAll(1, 10, "all", "all", "", "", "asc");
-        Assertions.assertEquals(6, response.getPages());
-        Assertions.assertEquals(1, response.getOffset());
-        Assertions.assertNotNull(response.getData());
-        Assertions.assertEquals("Create the repository", response.getData().getFirst().getName());
-
-    }
-
-    @Test
-    public void getPrioritySortDescRecords() {
-        CustomResponse<Task> response = toDoDao.findAll(1, 10, "all", "all", "", "", "desc");
-        Assertions.assertEquals(6, response.getPages());
-        Assertions.assertEquals(1, response.getOffset());
-        Assertions.assertNotNull(response.getData());
-        Assertions.assertEquals("test edited", response.getData().getFirst().getName());
-
-    }
-
-    @Test
-    public void getDueDateSortRecords() {
-        CustomResponse<Task> response = toDoDao.findAll(1, 10, "all", "all", "", "asc", "");
-        Assertions.assertEquals(6, response.getPages());
-        Assertions.assertEquals(1, response.getOffset());
-        Assertions.assertNotNull(response.getData());
-        Assertions.assertEquals("Create the repository", response.getData().getFirst().getName());
-
-    }
-
-    @Test
-    public void getDueDateSortDescRecords() {
-        Task update = toDoDao.updateTask(new Task(2L, null, false, LocalDate.of(2025, 3, 30), Task.Priority.LOW, "test edited"), 2L);
-        CustomResponse<Task> response = toDoDao.findAll(1, 10, "all", "all", "", "desc", "");
-        Assertions.assertEquals(5, response.getPages());
-        Assertions.assertEquals(1, response.getOffset());
-        Assertions.assertNotNull(response.getData());
-        Assertions.assertEquals("test edited", response.getData().getFirst().getName());
-
-    }
 
 
 

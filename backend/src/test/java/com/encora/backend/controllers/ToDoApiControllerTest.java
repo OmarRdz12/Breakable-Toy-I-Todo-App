@@ -1,5 +1,6 @@
 package com.encora.backend.controllers;
 
+import com.encora.backend.exception.TaskException;
 import com.encora.backend.model.Task;
 import com.encora.backend.service.ToDoServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -18,16 +18,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -63,10 +59,54 @@ public class ToDoApiControllerTest {
     }
 
     @Test
+    public void createTodo_withInvalidData_shouldReturnBadRequest() throws Exception {
+        Task invalidTask = new Task(1L, null, false, null, Task.Priority.LOW, "");
+        mockMvc.perform(post("/todos")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(invalidTask)))
+                .andExpect(status().isBadRequest());
+    }
+
+
+    @Test
+    public void getTodos() throws Exception {
+        mockMvc.perform(get("/todos")
+                        .param("page", "1")
+                        .param("limit", "10"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void getTodos_withInvalidPage_shouldReturnBadRequest() throws Exception {
+        mockMvc.perform(get("/todos")
+                        .param("page", "0")
+                        .param("limit", "10"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void getTodos_withInvalidLimit_shouldReturnBadRequest() throws Exception {
+        mockMvc.perform(get("/todos")
+                        .param("page", "1")
+                        .param("limit", "0"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
     public void updateTodo() throws  Exception {
         Task updated = new Task(1L, null, false, LocalDate.of(2025, 2,15), Task.Priority.LOW, "Test Task edited");
-        Mockito.when(toDoService.save(updated)).thenReturn(updated);
+        Mockito.when(toDoService.updateTask(Mockito.any(Task.class), Mockito.eq(1L))).thenReturn(updated);
         mockMvc.perform(put("/todos/1").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(updated))).andExpect(status().isOk());
+    }
+
+    @Test
+    public void updateTodo_withNullId_shouldThrowException() {
+        Task updatedTask = new Task(1L, null, false, null, Task.Priority.LOW, "TASK");
+        Exception exception = Assertions.assertThrows(TaskException.class, () -> {
+            toDoController.updateTodo(updatedTask, null);
+        });
+
+        Assertions.assertEquals("ID cannot be null", exception.getMessage());
     }
 
     @Test
@@ -88,6 +128,15 @@ public class ToDoApiControllerTest {
     }
 
     @Test
+    public void undoneTodo_withNullId_shouldThrowException() {
+        Exception exception = Assertions.assertThrows(TaskException.class, () -> {
+            toDoController.undoneTodo(null);
+        });
+
+        Assertions.assertEquals("ID cannot be null", exception.getMessage());
+    }
+
+    @Test
     public void doneTodo() throws  Exception {
 
         Mockito.when(toDoService.doneTask(1L)).thenAnswer(invocation -> {
@@ -106,13 +155,20 @@ public class ToDoApiControllerTest {
     }
 
     @Test
-    public void TestDeleteToDoEndpoint() throws Exception{
+    public void doneTodo_withNullId_shouldThrowException() {
+        Exception exception = Assertions.assertThrows(TaskException.class, () -> {
+            toDoController.doneTodo(null);
+        });
+
+        Assertions.assertEquals("ID cannot be null", exception.getMessage());
+    }
+
+    @Test
+    public void testDeleteToDoEndpoint() throws Exception{
         Mockito.when(toDoService.deleteTask(1L))
                 .thenReturn(newTask);
 
         mockMvc.perform(delete("/todos/1").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(1L))).andExpect(status().isOk());
     }
-
-
 
 }

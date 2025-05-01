@@ -1,6 +1,7 @@
 package com.encora.backend.service;
 
 import com.encora.backend.dao.ToDoDao;
+import com.encora.backend.exception.TaskException;
 import com.encora.backend.model.CustomResponse;
 import com.encora.backend.model.Task;
 import org.junit.jupiter.api.Assertions;
@@ -34,8 +35,88 @@ public class ToDoServiceTest {
         taskList = new ArrayList<>();
         taskList.add(new Task(1L,null, false, LocalDate.of(2025, 10, 9), Task.Priority.LOW, "Test one"));
         taskList.add(new Task(2L, LocalDateTime.of(2025, 1, 28, 10, 2), true, LocalDate.of(2025, 10, 11), Task.Priority.LOW, "Test two"));
-        taskList.add(new Task(3L,null, false, LocalDate.of(2025, 10, 10), Task.Priority.LOW, "Test three"));
-        taskList.add(new Task(4L,null, false, LocalDate.of(2025, 10, 12), Task.Priority.LOW, "Test four"));
+        taskList.add(new Task(3L,null, false, LocalDate.of(2025, 10, 10), Task.Priority.HIGH, "Test three"));
+        taskList.add(new Task(4L,LocalDateTime.of(2025, 10, 12, 1, 1), true, LocalDate.of(2025, 10, 12), Task.Priority.MEDIUM, "Test four"));
+    }
+
+    @Test
+    public void filterToDos_withoutFilters_shouldReturnAllToDos() {
+        List<Task> allToDos = toDoService.filterToDos(taskList, "all", "", "all");
+        Assertions.assertEquals(4, allToDos.size());
+    }
+
+    @Test
+    public void filterToDos_byPriority_shouldReturnMatching() {
+        List<Task> result = toDoService.filterToDos(taskList, "LOW", "", "all");
+        Assertions.assertEquals(2, result.size());
+    }
+
+    @Test
+    public void filterToDos_byState_shouldReturnMatching() {
+        List<Task> result = toDoService.filterToDos(taskList, "all", "", "true");
+        Assertions.assertEquals(2, result.size());
+    }
+
+    @Test
+    public void filterToDos_byName_shouldReturnMatching() {
+        List<Task> result = toDoService.filterToDos(taskList, "all", "test four", "all");
+        Assertions.assertEquals(1, result.size());
+    }
+
+    @Test
+    public void filterToDos_noMatches_shouldReturnEmptyList() {
+        List<Task> result = toDoService.filterToDos(taskList, "LOW", "five", "true");
+        Assertions.assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void sortToDos_byDueDateAsc() {
+        List<Task> sorted = toDoService.sortToDos(new ArrayList<>(taskList), "asc", "");
+
+        Assertions.assertEquals(1L, sorted.get(0).getId());
+        Assertions.assertEquals(3L, sorted.get(1).getId());
+        Assertions.assertEquals(2L, sorted.get(2).getId());
+        Assertions.assertEquals(4L, sorted.get(3).getId());
+    }
+
+    @Test
+    public void sortToDos_byDueDateDesc() {
+        List<Task> sorted = toDoService.sortToDos(new ArrayList<>(taskList), "desc", "");
+
+        Assertions.assertEquals(4L, sorted.get(0).getId());
+        Assertions.assertEquals(2L, sorted.get(1).getId());
+        Assertions.assertEquals(3L, sorted.get(2).getId());
+        Assertions.assertEquals(1L, sorted.get(3).getId());
+    }
+
+    @Test
+    public void sortToDos_byPriorityAsc() {
+        List<Task> sorted = toDoService.sortToDos(new ArrayList<>(taskList), "", "asc");
+
+        Assertions.assertEquals(3L, sorted.get(0).getId());
+        Assertions.assertEquals(4L, sorted.get(1).getId());
+        Assertions.assertEquals(1L, sorted.get(2).getId());
+        Assertions.assertEquals(2L, sorted.get(3).getId());
+    }
+
+    @Test
+    public void sortToDos_byPriorityDesc() {
+        List<Task> sorted = toDoService.sortToDos(new ArrayList<>(taskList), "", "desc");
+
+        Assertions.assertEquals(1L, sorted.get(0).getId());
+        Assertions.assertEquals(2L, sorted.get(1).getId());
+        Assertions.assertEquals(4L, sorted.get(2).getId());
+        Assertions.assertEquals(3L, sorted.get(3).getId());
+    }
+
+    @Test
+    public void sortToDos_byPriorityAndDueDateAsc() {
+        List<Task> sorted = toDoService.sortToDos(new ArrayList<>(taskList), "asc", "asc");
+
+        Assertions.assertEquals(3L, sorted.get(0).getId());
+        Assertions.assertEquals(4L, sorted.get(1).getId());
+        Assertions.assertEquals(1L, sorted.get(2).getId());
+        Assertions.assertEquals(2L, sorted.get(3).getId());
     }
 
     @Test
@@ -91,14 +172,20 @@ public class ToDoServiceTest {
     }
 
     @Test
-    public void getAllTodos() {
-        CustomResponse<Task> expected = new CustomResponse<>(taskList, 4, 4);
-        Mockito.when(toDoDao.findAll(1, 10, "all", "all", "", "", "")).thenReturn(expected);
-        final CustomResponse<Task> result = toDoService.getAllToDos(1, 10, "all", "all", "", "", "" );
-        Assertions.assertEquals(expected.getData(), result.getData());
-        Assertions.assertEquals(expected.getOffset(), result.getOffset());
-        Assertions.assertEquals(expected.getPages(), result.getPages());
+    public void getAllToDos_shouldThrowExceptionIfEmpty() {
+        Mockito.when(toDoDao.findAll()).thenReturn(List.of());
 
+        Assertions.assertThrows(TaskException.class, () -> {
+            toDoService.getAllToDos(1, 10, "all", "all", "", "", "");
+        });
+    }
+
+    @Test
+    public void shouldFilterByStateTrueAndPriorityLOW() {
+        Mockito.when(toDoDao.findAll()).thenReturn(taskList);
+        CustomResponse<Task> response = toDoService.getAllToDos(1, 10, "LOW", "true", "", "", "");
+        Assertions.assertEquals(1, response.getData().size());
+        Assertions.assertEquals("Test two", response.getData().getFirst().getName());
     }
 
 }
