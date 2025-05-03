@@ -3,6 +3,8 @@ package com.encora.backend.service;
 import com.encora.backend.model.CustomResponse;
 import com.encora.backend.model.Task;
 
+import java.util.List;
+
 public interface ToDoService {
     CustomResponse<Task> getAllToDos(int page, int limit, String priority, String state, String name, String dueDateSort, String prioritySort);
     Task save(Task task);
@@ -10,4 +12,6 @@ public interface ToDoService {
     Task undoneTask(Long id);
     Task doneTask(Long id);
     Task deleteTask(Long id);
+    List<Task> filterToDos(List<Task> toDos, String priority, String name, String state);
+    List<Task> sortToDos(List<Task> toDos, String dueDateSort, String prioritySort);
 }

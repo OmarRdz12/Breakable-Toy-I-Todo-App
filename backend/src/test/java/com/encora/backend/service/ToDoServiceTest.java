@@ -7,31 +7,27 @@ import com.encora.backend.model.Task;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@ExtendWith(MockitoExtension.class)
 public class ToDoServiceTest {
 
     @Mock
     private ToDoDao toDoDao;
-    @InjectMocks
-    private ToDoServiceImpl toDoService;
+    private ToDoService toDoService;
 
     private List<Task> taskList;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
+        toDoService = new ToDoServiceImpl(toDoDao);
         taskList = new ArrayList<>();
         taskList.add(new Task(1L,null, false, LocalDate.of(2025, 10, 9), Task.Priority.LOW, "Test one"));
         taskList.add(new Task(2L, LocalDateTime.of(2025, 1, 28, 10, 2), true, LocalDate.of(2025, 10, 11), Task.Priority.LOW, "Test two"));

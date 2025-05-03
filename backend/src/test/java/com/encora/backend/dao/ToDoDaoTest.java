@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 
 @ExtendWith(MockitoExtension.class)
 public class ToDoDaoTest {
-    private ToDoDaoImpl toDoDao;
+    private ToDoDao toDoDao;
 
     @BeforeEach
     public void setUp() {

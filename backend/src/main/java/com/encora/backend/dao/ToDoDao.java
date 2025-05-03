@@ -13,4 +13,5 @@ public interface ToDoDao {
     Task doneTask(Long id);
     Task deleteTask(Long id);
     Stat getStats();
+    String getAverage(long time, int size);
 }
