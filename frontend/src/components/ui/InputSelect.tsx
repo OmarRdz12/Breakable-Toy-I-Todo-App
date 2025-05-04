@@ -13,7 +13,7 @@ const InputSelect = ({ id, label, required, onChange, name, options, defaultValu
         defaultValue={defaultValue}
         size={size}
         value={value}
-        className={className}
+        className={`select-black-border ${className}`}
       />
     </div>
   )

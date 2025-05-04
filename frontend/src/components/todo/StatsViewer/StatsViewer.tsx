@@ -7,7 +7,7 @@ const StatsViewer = () => {
     const mediumTasks: string[] = stats.mediumDoneStats.split(":")
     const lowTaks: string[] = stats.lowDoneStats.split(":")
     return (
-        <div className="w-11/12 p-4 my-4 flex border-2 justify-between border-gray-200 gap-2 box-border rounded shadow">
+        <div className="w-11/12 p-4 my-4 flex border justify-between border-black gap-2 bg-blue-300 box-border rounded shadow">
             <div className="w-1/2 flex flex-col items-center justify-evenly">
                 <h4 className="font-bold">Average time to finish tasks</h4>
                 {

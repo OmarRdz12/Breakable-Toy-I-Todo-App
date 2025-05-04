@@ -1,4 +1,4 @@
-import { DatePicker } from "antd";
+import { ConfigProvider, DatePicker } from "antd";
 import { SizeType } from "antd/es/config-provider/SizeContext"
 import dayjs, { Dayjs } from 'dayjs'
 
@@ -15,18 +15,32 @@ interface InputDateProps {
 const InputDate = ({ id, label, required = false, onChange, name, size, value }: InputDateProps) => {
 
     return (
-        <div className="flex gap-2 flex-col">
-            <label htmlFor={id}>{label}{required && <span className="text-red-500"> *</span>}</label>
-            <DatePicker
-                name={name}
-                onChange={onChange}
-                required={required}
-                size={size}
-                id={id}
-                value={value}
-                minDate={dayjs(Date.now())}
-            />
-        </div>
+        <ConfigProvider
+            theme={{
+                token: {
+                    colorBorder: "#000000",
+                },
+                components: {
+                    DatePicker: {
+                        activeBorderColor: "#000000",
+                        hoverBorderColor: "#000000",
+                    }
+                }
+            }}
+        >
+            <div className="flex gap-2 flex-col">
+                <label htmlFor={id}>{label}{required && <span className="text-red-500"> *</span>}</label>
+                <DatePicker
+                    name={name}
+                    onChange={onChange}
+                    required={required}
+                    size={size}
+                    id={id}
+                    value={value}
+                    minDate={dayjs(Date.now())}
+                />
+            </div>
+        </ConfigProvider>
     )
 }
 

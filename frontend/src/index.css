@@ -11,3 +11,11 @@
     border-radius: 9999px;
     border-color: black;
 }
+
+.select-black-border .ant-select-selector {
+    border: 1px solid black !important;
+}
+
+.input-black-border .ant-input {
+    border: 1px solid black !important;
+}
