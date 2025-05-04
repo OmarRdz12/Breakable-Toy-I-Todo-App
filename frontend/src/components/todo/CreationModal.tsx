@@ -9,10 +9,7 @@ import dayjs, { Dayjs } from 'dayjs'
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { controlCreate } from "../../features/forms/modalSlice"
 import { toast } from "sonner"
-
-interface CreationModalProps {
-    fetchData(): Promise<void>;
-}
+import { useFetchTodos } from "../../hooks/useFetchTodos"
 
 interface CreationForm {
     name: string
@@ -20,10 +17,11 @@ interface CreationForm {
     dueDate: string | number | Dayjs | Date | null | undefined
 }
 
-const CreationModal = ({ fetchData }: CreationModalProps) => {
+const CreationModal = () => {
     const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:9090"
     const creationModal = useAppSelector(state => state.creation.open)
     const dispatch = useAppDispatch()
+    const { fetchTodos } = useFetchTodos()
     const [formData, setFormData] = useState<CreationForm>({ name: "", priority: "", dueDate: null })
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,7 +33,7 @@ const CreationModal = ({ fetchData }: CreationModalProps) => {
     }
 
     const onChange: DatePickerProps['onChange'] = (date) => {
-        setFormData({ ...formData, ["dueDate"]: date.format("YYYY-MM-DD") })
+        setFormData({ ...formData, dueDate: date?.format("YYYY-MM-DD") })
     }
 
     const onSubmit = async () => {
@@ -46,7 +44,7 @@ const CreationModal = ({ fetchData }: CreationModalProps) => {
         try {
             dispatch(controlCreate(false))
             const data = await axios.post(`${apiUrl}/todos`, formData)
-            fetchData()
+            await fetchTodos()
             setFormData({ name: "", priority: "", dueDate: "" })
             toast.success('Task has been created', {
                 description: `${data?.data.name}`,
@@ -62,48 +60,46 @@ const CreationModal = ({ fetchData }: CreationModalProps) => {
     }
 
     return (
-        <>
-            <BaseModal onSubmit={onSubmit} closeModal={closeModal} openModal={creationModal} text="Save" title="New To Do" >
-                <form className="w-full flex flex-col p-4 gap-2">
-                    <InputText
-                        placeholder="Escribe aqui"
-                        name="name"
-                        id="name"
-                        type="text"
-                        size="large"
-                        label="Name"
-                        value={formData.name}
-                        maxLength={120}
-                        showCount
-                        onChange={handleInputChange}
-                        required
-                    />
-                    <InputSelect
-                        name="priority"
-                        label="Priority"
-                        id="priority"
-                        onChange={(value) => handleChange(value, "priority")}
-                        options={[
-                            { label: 'High', value: "HIGH" },
-                            { label: 'Medium', value: "MEDIUM" },
-                            { label: 'Low', value: "LOW" },
-                        ]}
-                        value={formData.priority}
-                        defaultValue=""
-                        size="large"
-                        required
-                    />
-                    <InputDate
-                        label="Due date"
-                        id="dueDate"
-                        onChange={onChange}
-                        size="large"
-                        name="dueDate"
-                        value={formData.dueDate ? dayjs(formData.dueDate) : null}
-                    />
-                </form>
-            </BaseModal>
-        </>
+        <BaseModal onSubmit={onSubmit} closeModal={closeModal} openModal={creationModal} text="Save" title="New To Do">
+            <form className="w-full flex flex-col p-4 gap-2">
+                <InputText
+                    placeholder="Escribe aqui"
+                    name="name"
+                    id="name"
+                    type="text"
+                    size="large"
+                    label="Name"
+                    value={formData.name}
+                    maxLength={120}
+                    showCount
+                    onChange={handleInputChange}
+                    required
+                />
+                <InputSelect
+                    name="priority"
+                    label="Priority"
+                    id="priority"
+                    onChange={(value) => handleChange(value, "priority")}
+                    options={[
+                        { label: 'High', value: "HIGH" },
+                        { label: 'Medium', value: "MEDIUM" },
+                        { label: 'Low', value: "LOW" },
+                    ]}
+                    value={formData.priority}
+                    defaultValue=""
+                    size="large"
+                    required
+                />
+                <InputDate
+                    label="Due date"
+                    id="dueDate"
+                    onChange={onChange}
+                    size="large"
+                    name="dueDate"
+                    value={formData.dueDate ? dayjs(formData.dueDate) : null}
+                />
+            </form>
+        </BaseModal>
     )
 }
 
