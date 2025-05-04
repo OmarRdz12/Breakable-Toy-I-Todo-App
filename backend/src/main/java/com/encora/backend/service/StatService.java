@@ -4,4 +4,5 @@ import com.encora.backend.model.Stat;
 
 public interface StatService {
     Stat getStats();
+    Integer getPending();
 }

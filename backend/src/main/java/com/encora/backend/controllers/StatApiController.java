@@ -18,4 +18,9 @@ public class StatApiController implements StatApi {
     public ResponseEntity<Stat> getStats() {
         return new ResponseEntity<>(statService.getStats(), HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<Integer> getPending() {
+        return new ResponseEntity<>(statService.getPending(), HttpStatus.OK);
+    }
 }

@@ -16,4 +16,12 @@ public class StatServiceImpl implements StatService{
     public Stat getStats() {
         return toDoDao.getStats();
     }
+
+    @Override
+    public Integer getPending() {
+        return (int) toDoDao.findAll()
+                .stream()
+                .filter(task -> !task.isState())
+                .count();
+    }
 }

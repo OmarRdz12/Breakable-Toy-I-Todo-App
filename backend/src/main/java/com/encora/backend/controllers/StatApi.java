@@ -7,4 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public interface StatApi {
     @GetMapping("/todos/stats")
     ResponseEntity<Stat> getStats();
+    @GetMapping("/todos/pending")
+    ResponseEntity<Integer> getPending();
 }
