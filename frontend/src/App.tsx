@@ -38,12 +38,15 @@ function App() {
   }, [currentPage, sorts])
 
   return (
-    <div className="w-screen flex flex-col items-center">
-      <h1 className="my-2 font-bold text-3xl">Todo App</h1>
+    <div className="flex flex-col items-center">
+      <div className="w-11/12 h-fit p-4">
+        <h1 className="text-left text-xl text-gray-500">Good morning!</h1>
+        <h2 className="text-left text-2xl text-bold">You have <span className="text-blue-400">49</span> pending tasks</h2>
+      </div>
       <FilterForm fetchData={fetchData} />
       <div className="w-11/12 flex items-start">
-        <BaseButton onClick={() => dispatch(controlCreate(true))} text="New Todo" htmlType="button" size="large" icon={<IoMdAddCircle/>} className=" bg-zinc-900 text-white shadow hover:!bg-zinc-700 
-                        hover:!border-zinc-700 hover:!text-white" />
+        <BaseButton onClick={() => dispatch(controlCreate(true))} text="New Todo" htmlType="button" size="large" icon={<IoMdAddCircle />} className="bg-blue-400 text-black hover:!bg-blue-500 
+         hover:!border-blue-500 hover:!text-black border border-black" />
       </div>
       <DataViewer fetchData={fetchData} />
       {

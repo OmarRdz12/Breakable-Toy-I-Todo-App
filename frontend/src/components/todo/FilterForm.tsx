@@ -3,6 +3,7 @@ import InputText from "../ui/InputText"
 import { useAppDispatch } from "../../app/hooks"
 import { onChange } from "../../features/forms/filterSlice"
 import BaseButton from "../ui/Buttons/Buttons"
+import { FaSearch } from "react-icons/fa";
 
 interface FilterProps {
     fetchData(): Promise<void>;
@@ -27,9 +28,9 @@ const FilterForm = ({ fetchData }: FilterProps) => {
 
     return (
         <>
-            <form className="w-11/12 p-4 my-4 flex flex-col border-2 border-gray-200 gap-2 box-border rounded shadow " onSubmit={handleSubmit}>
+            <form className="w-11/12 p-4 flex flex-col gap-2 box-border" onSubmit={handleSubmit}>
                 <InputText
-                    placeholder="Escribe aqui"
+                    placeholder="Search a task"
                     name="name"
                     id="name"
                     type="text"
@@ -38,6 +39,8 @@ const FilterForm = ({ fetchData }: FilterProps) => {
                     maxLength={120}
                     showCount
                     onChange={handleInputChange}
+                    prefix={<FaSearch />}
+
                 />
                 <InputSelect
                     name="priority"
@@ -71,8 +74,9 @@ const FilterForm = ({ fetchData }: FilterProps) => {
                         htmlType="submit"
                         text="Search"
                         size="large"
-                        className="w-1/2 bg-zinc-900 text-white shadow hover:!bg-zinc-700 
-                        hover:!border-zinc-700 hover:!text-white"
+                        icon={<FaSearch />}
+                        className="w-[300px] bg-blue-400 text-black hover:!bg-blue-500 
+                        hover:!border-blue-500 hover:!text-black border border-black"
                     />
                 </div>
             </form>

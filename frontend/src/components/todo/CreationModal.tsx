@@ -49,7 +49,7 @@ const CreationModal = ({ fetchData }: CreationModalProps) => {
             fetchData()
             setFormData({ name: "", priority: "", dueDate: "" })
             toast.success('Task has been created', {
-                description: `${data?.data.dueDate}`,
+                description: `${data?.data.name}`,
             })
         } catch (error) {
             toast.error('Something went wrong')

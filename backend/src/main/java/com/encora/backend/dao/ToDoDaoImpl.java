@@ -1,6 +1,5 @@
 package com.encora.backend.dao;
 
-import com.encora.backend.model.CustomResponse;
 import com.encora.backend.model.Stat;
 import com.encora.backend.model.Task;
 import org.springframework.stereotype.Repository;

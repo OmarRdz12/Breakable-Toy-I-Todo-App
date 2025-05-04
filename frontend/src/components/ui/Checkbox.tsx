@@ -71,8 +71,8 @@ const BaseCheckbox = ({ originChecked = false, id, fetchData, columnSelector }: 
         <>
             {
                 columnSelector ?
-                    <Checkbox checked={stateRecords} disabled={disabled} onChange={onChange} /> :
-                    <Checkbox checked={originChecked} disabled={disabled} onChange={onChange} />
+                    <Checkbox checked={stateRecords} disabled={disabled} onChange={onChange} className="custom-checkbox" /> :
+                    <Checkbox checked={originChecked} disabled={disabled} onChange={onChange} className="custom-checkbox" />
             }
         </>
     )

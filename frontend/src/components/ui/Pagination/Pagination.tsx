@@ -15,7 +15,8 @@ const BasePagination = ({ current, total, onChange, align, className }: Paginati
             total={total}
             onChange={onChange}
             align={align}
-            className={className}
+            className={`${className}`}
+            showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
         />
     )
 }

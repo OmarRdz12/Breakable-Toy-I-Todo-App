@@ -62,78 +62,84 @@ const NewTable = ({ headers, rows, fetchData, columnSelector = false }: TableBas
 
     return (
         <div className="w-full mt-2 flex justify-center">
-            <table className="w-11/12 table-auto border-collapse border-black">
-                <thead>
-                    <tr className="text-left bg-zinc-900 text-white text-sm font-semibold">
-                        {
-                            columnSelector &&
-                            <th className="text-center">
-                                <BaseCheckbox columnSelector={true} fetchData={fetchData} />
-                            </th>
-                        }
-                        {
-                            headers.map((header, key) => (
-                                <th className="py-3 pl-1" key={key}>
-                                    <div className="flex items-center gap-2">
-                                        {header.title}
-                                        {
-                                            header.sorter &&
-                                            <div className="flex flex-col hover:cursor-pointer text-sm" onClick={() => handleChange(header.titleSorter)}>
-                                                <MdArrowDropUp className={`${header.titleSorter && sorts[header.titleSorter] === 'asc' && 'text-blue-500'}`} />
-                                                <MdArrowDropDown className={`${header.titleSorter && sorts[header.titleSorter] === 'desc' && 'text-blue-500'}`} />
-                                            </div>
-                                        }
-                                    </div>
-
+            <div className="w-11/12 rounded-xl overflow-hidden shadow-md border-x border-t border-black">
+                <table className="w-full table-auto">
+                    <thead>
+                        <tr className="text-left bg-blue-400 text-black text-lg font-semibold border-b border-black">
+                            {
+                                columnSelector &&
+                                <th className="text-center rounded-tl-xl">
+                                    <BaseCheckbox columnSelector={true} fetchData={fetchData} />
                                 </th>
+                            }
+                            {
+                                headers.map((header, key) => (
+                                    <th
+                                        className={`py-3 pl-1 ${!columnSelector && key === 0 ? 'rounded-tl-xl' : ''} ${key === headers.length - 1 ? 'rounded-tr-xl' : ''}`}
+                                        key={key}
+                                    >
+                                        <div className="flex items-center gap-2">
+                                            {header.title}
+                                            {
+                                                header.sorter &&
+                                                <div className="flex flex-col hover:cursor-pointer text-sm" onClick={() => handleChange(header.titleSorter)}>
+                                                    <MdArrowDropUp className={`${header.titleSorter && sorts[header.titleSorter] === 'asc' && 'text-blue-800'}`} />
+                                                    <MdArrowDropDown className={`${header.titleSorter && sorts[header.titleSorter] === 'desc' && 'text-blue-800'}`} />
+                                                </div>
+                                            }
+                                        </div>
+                                    </th>
+                                ))
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            rows.map((row) => (
+                                <tr className={`border-b border-black ${row.dueDate && differenceInDays(parseISO(row.dueDate), new Date()) <= 7 ? 'bg-red-200' : row.dueDate && differenceInDays(parseISO(row.dueDate), new Date()) <= 14 ? 'bg-yellow-200' : row.dueDate !== null && 'bg-green-200'}`} key={row.id}>
+                                    <td className="flex justify-center items-center">
+                                        <BaseCheckbox fetchData={fetchData} id={row.id} originChecked={row.state} />
+                                    </td>
+                                    <td className={`py-3 ${row.state === true && 'line-through'}`}>{row.name}</td>
+                                    <td className="py-3">{row.priority}</td>
+                                    <td className="py-3">{row.dueDate}</td>
+                                    <td className="flex gap-1 py-3">
+                                        <BaseButton
+                                            text="delete"
+                                            className={`${!row.state && 'hover:!text-red-500 hover:!border-red-500'} border border-black`}
+                                            shape="circle"
+                                            icon={<MdDelete />}
+                                            toolTip
+                                            htmlType="button"
+                                            disabled={row.state}
+                                            onClick={() => onDelete(row.id)}
+                                            id="delete"
+                                        />
+                                        <BaseButton
+                                            text="edit"
+                                            shape="circle"
+                                            icon={<MdEdit />}
+                                            toolTip
+                                            htmlType="button"
+                                            onClick={() => loadDataModal(row)}
+                                            disabled={row.state}
+                                            id="edit"
+                                            className="border border-black"
+                                        />
+                                    </td>
+                                </tr>
                             ))
                         }
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        rows.map((row) => (
-                            <tr className={`border-b ${row.dueDate && differenceInDays(parseISO(row.dueDate), new Date()) <= 7 ? 'bg-red-300': row.dueDate && differenceInDays(parseISO(row.dueDate), new Date()) <= 14 ? 'bg-yellow-300' : row.dueDate !== null && 'bg-green-300'  }`} key={row.id}>
-                                <td className="flex justify-center items-center">
-                                    <BaseCheckbox fetchData={fetchData} id={row.id} originChecked={row.state} />
-                                </td>
-                                <td className={`py-3 ${row.state === true && 'line-through'}`}>{row.name}</td>
-                                <td className="py-3">{row.priority}</td>
-                                <td className="py-3">{row.dueDate}</td>
-                                <td className="flex gap-1 py-3">
-                                    <BaseButton
-                                        text="delete"
-                                        className={`${!row.state && 'hover:!text-red-500 hover:!border-red-500'} `}
-                                        shape="circle"
-                                        icon={<MdDelete />}
-                                        toolTip
-                                        htmlType="button"
-                                        disabled={row.state}
-                                        onClick={() => onDelete(row.id)}
-                                        id="delete"
-                                    />
-                                    <BaseButton
-                                        text="edit"
-                                        shape="circle"
-                                        icon={<MdEdit />}
-                                        toolTip
-                                        htmlType="button"
-                                        onClick={() => loadDataModal(row)}
-                                        disabled={row.state}
-                                        id="edit"
-                                    />
-                                </td>
-                            </tr>
-                        ))
-                    }
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
             {
                 updateModal &&
                 <UpdateModal fetchData={fetchData} />
             }
         </div>
     )
+
 }
 
 export default NewTable
