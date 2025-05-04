@@ -4,6 +4,7 @@ import paginationReducer from "../features/tasks/paginationSlice"
 import { filterReducer, sortReducer } from "../features/forms/filterSlice"
 import { createModalReducer, updateModalReducer } from "../features/forms/modalSlice"
 import statReducer from "../features/stats/statSlice"
+import { pendingReducer } from "../features/stats/pendingSlice"
 
 export const store = configureStore({
     reducer: {
@@ -15,7 +16,8 @@ export const store = configureStore({
         selectedTask: selectedTaskReducer,
         stats: statReducer,
         stateTask: stateTaskReducer,
-        sorts: sortReducer
+        sorts: sortReducer,
+        pending: pendingReducer
     }
 })
 
