@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react"
-import BaseModal from "./Modal";
+import BaseModal from "../Modal";
 import "@testing-library/react"
 
 describe("Modal", () => {

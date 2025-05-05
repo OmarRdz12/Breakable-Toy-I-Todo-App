@@ -1,4 +1,4 @@
-import BaseButton from "./Buttons";
+import BaseButton from "../Buttons";
 import { fireEvent, render, screen } from "@testing-library/react"
 
 describe("Button", () => {

@@ -1,4 +1,3 @@
-// App.tsx
 import { useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "./app/hooks"
 import { controlCreate } from "./features/forms/modalSlice"
@@ -8,10 +7,10 @@ import { IoMdAddCircle } from "react-icons/io"
 import { useFetchTodos } from "./hooks/useFetchTodos"
 
 import FilterForm from "./components/todo/FilterForm"
-import DataViewer from "./components/todo/DataViewer/DataViewer"
+import DataViewer from "./components/todo/DataViewer"
 import CreationModal from "./components/todo/CreationModal"
-import StatsViewer from "./components/todo/StatsViewer/StatsViewer"
-import BaseButton from "./components/ui/Buttons/Buttons"
+import StatsViewer from "./components/todo/StatsViewer"
+import BaseButton from "./components/ui/Buttons"
 import { useGreeting } from "./hooks/useGreeting"
 
 function App() {

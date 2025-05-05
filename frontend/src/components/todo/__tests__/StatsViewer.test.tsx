@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react"
 import "@testing-library/react"
 import { Provider } from "react-redux"
-import StatsViewer from "./StatsViewer"
+import StatsViewer from "../StatsViewer"
 import { store } from "../../../app/store"
 import statReducer from "../../../features/stats/statSlice"
 import { configureStore } from "@reduxjs/toolkit"

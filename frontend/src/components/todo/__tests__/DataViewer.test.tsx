@@ -8,7 +8,7 @@ import { tasksReducer } from "../../../features/tasks/taskSlice"
 import paginationReducer from "../../../features/tasks/paginationSlice"
 import { updateModalReducer } from "../../../features/forms/modalSlice"
 import { sortReducer } from "../../../features/forms/filterSlice"
-import DataViewer from "./DataViewer"
+import DataViewer from "../DataViewer"
 
 describe("Data section", () => {
     vi.stubGlobal("matchMedia", vi.fn(() => ({

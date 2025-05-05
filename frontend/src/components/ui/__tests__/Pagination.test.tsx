@@ -1,6 +1,6 @@
 
 import { fireEvent, render, screen } from "@testing-library/react"
-import BasePagination from "./Pagination"
+import BasePagination from "../Pagination"
 
 describe("Pagination", () => {
     vi.stubGlobal("matchMedia", vi.fn(() => ({
@@ -13,7 +13,7 @@ describe("Pagination", () => {
 
     test("should render pagination", () => {
         render(<BasePagination current={1} total={50} onChange={fn} />)
-        expect(screen.getByText(/5/))
+        expect(screen.getByText(/1-10 of 50 items/))
     })
 
     test("should update next page", () => {
