@@ -83,8 +83,8 @@ const NewTable = ({ headers, rows, fetchData, columnSelector = false }: TableBas
                                             {
                                                 header.sorter &&
                                                 <div className="flex flex-col hover:cursor-pointer text-sm" onClick={() => handleChange(header.titleSorter)}>
-                                                    <MdArrowDropUp className={`${header.titleSorter && sorts[header.titleSorter] === 'asc' && 'text-blue-800'}`} />
-                                                    <MdArrowDropDown className={`${header.titleSorter && sorts[header.titleSorter] === 'desc' && 'text-blue-800'}`} />
+                                                    <MdArrowDropUp className={`${header.titleSorter && sorts[header.titleSorter] === 'asc' && 'text-blue-800'}`} data-testid="sort-up" />
+                                                    <MdArrowDropDown className={`${header.titleSorter && sorts[header.titleSorter] === 'desc' && 'text-blue-800'}`} data-testid="sort-down" />
                                                 </div>
                                             }
                                         </div>
